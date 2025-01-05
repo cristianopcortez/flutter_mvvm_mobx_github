@@ -1,0 +1,138 @@
+plugins {
+    id "com.android.application"
+     id 'com.google.gms.google-services'
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace = "br.com.ccortez.mobx_mvvm"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "br.com.ccortez.mobx_mvvm"
+
+        println "BuildInfo: localProperties.flutterVersionCode:  ${localProperties.getProperty('flutter.versionCode')}"
+        println "BuildInfo: localProperties.flutterVersionName:  ${localProperties.getProperty('flutter.versionName')}"
+        println "BuildInfo: flutterVersionCode:  ${flutterVersionCode}"
+        println "BuildInfo: flutterVersionName:  ${flutterVersionName}"
+
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    task decodeKeystore {
+        def encodedKeystore = System.getenv("KEYSTORE_BASE64")
+        try {
+//            def decodedKeystoreBytes = Base64.decodeBase64(encodedKeystore)
+            def decodedKeystoreBytes = Base64.getDecoder().decode(encodedKeystore.toString())
+            // Save the decoded keystore bytes to a temporary file
+            def tempFile = File.createTempFile("decoded_keystore", ".jks")
+            //        tempFile.writeBytes(decodedKeystoreBytes)
+            FileUtils.writeByteArrayToFile(tempFile, decodedKeystoreBytes);
+
+            // Use the temporary file with storeFile
+            signingConfigs {
+                release {
+                    storeFile file(tempFile.absolutePath)
+
+                    // ... other signing configuration details
+                    storePassword System.getenv("KEYSTORE_PASSWORD")
+                    keyAlias System.getenv("KEY_ALIAS")
+                    keyPassword System.getenv("KEY_PASSWORD")
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            println "Invalid base64 encoding: ${e.message}"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules-debug.pro'
+
+            signingConfig signingConfigs.debug
+
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+
+            // Access the environment variable passed as an argument
+            def firebaseApiKey = System.getenv('FIREBASE_API_KEY')
+            def firebaseAppID = System.getenv('FIREBASE_APP_ID')
+            def firebaseMessagingSenderID = System.getenv('FIREBASE_MESSAGING_SENDER_ID')
+            def keystorePassword = System.getenv('KEYSTORE_PASSWORD')
+            def keyAlias = System.getenv('KEY_ALIAS')
+            def keyPassword = System.getenv('KEY_PASSWORD')
+            def keyStoreBase64 = System.getenv('KEYSTORE_BASE64')
+
+            // Access the environment variable
+            buildConfigField "String", "FIREBASE_API_KEY", "\"$firebaseApiKey\""
+            buildConfigField "String", "FIREBASE_APP_ID", "\"$firebaseAppID\""
+            buildConfigField "String", "FIREBASE_MESSAGING_SENDER_ID", "\"$firebaseMessagingSenderID\""
+            buildConfigField "String", "KEYSTORE_PASSWORD", "\"$keystorePassword\""
+            buildConfigField "String", "KEY_ALIAS", "\"$keyAlias\""
+            buildConfigField "String", "KEY_PASSWORD", "\"$keyPassword\""
+            buildConfigField "String", "KEYSTORE_BASE64", "\"$keyStoreBase64\""
+
+            // Temporarily set debuggable to true for debugging
+            debuggable false
+        }
+    }
+}
+
+dependencies {
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    // https://firebase.google.com/docs/android/setup#available-libraries
+}
+
+flutter {
+    source = "../.."
+}
+
+import org.apache.commons.io.FileUtils
