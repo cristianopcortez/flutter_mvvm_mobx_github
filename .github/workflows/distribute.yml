@@ -2,6 +2,7 @@ name: Distribute App
 
 on:
   push:
+    branches: [develop]
     #branches: [master]
     #branches: [feature/change_branch_to_start_br]
 
@@ -65,13 +66,16 @@ jobs:
         # (Optional) Specify Flutter version (e.g., with: flutter-version: 'stable')
         with:
           channel: stable
-          version: 3.10.5
+          version: 3.22.2
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Check Flutter and Dart versions
+      - name: Check Flutter version
         run: flutter --version
+
+      - name: Check Dart version
+        run: dart --version
 
 #      - name: Set up Signing
 #        uses: actions/checkout@v3
