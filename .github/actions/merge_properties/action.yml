@@ -1,0 +1,28 @@
+name: Merge Properties
+description: Merge Properties from one property to another one
+
+inputs:
+  source-file:
+    description: Path to the source local.properties file
+    required: true
+  target-file:
+    description: Path to the target local.properties file
+    required: true
+
+outputs:
+  merged:
+    description: Whether the properties were merged successfully (true/false)
+
+runs:
+  using: docker
+  image: 'Dockerfile'
+#  steps:
+#    - name: Run Merge Properties Script
+#      run: |
+#        chmod +x /main.sh
+#        ls -la ./.github/actions/merge_properties
+#        sh /main.sh ${{ inputs.source-file }} ${{ inputs.target-file }}
+  entrypoint: '/main.sh'
+  args:
+    - ${{ inputs.source-file }}
+    - ${{ inputs.target-file }}

@@ -1,0 +1,202 @@
+name: Distribute App
+
+on:
+  push:
+    #branches: [master]
+    #branches: [feature/change_branch_to_start_br]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create google-services.json file
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
+      - name: Decode Keystore
+        run: |
+          tempfile=$(mktemp)
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$tempfile"
+          touch keystore.jks
+          cat "$tempfile" >> keystore.jks
+          rm "$tempfile"
+      #echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks
+      - name: Generate local.properties
+        run: |
+          echo "flutter.versionCode=10000" >> local.properties
+          echo "flutter.versionName=1.0.0-internal" >> local.properties
+      #          echo "flutter.versionCode=$(git rev-parse --short HEAD)" >> local.properties
+      #          echo "flutter.versionName=1.0.$(git rev-parse --short HEAD)" >> local.properties
+      - name: Print root properties file
+        run: cat local.properties
+      - name: List files
+        run: ls -la
+      - name: List files android folder
+        run: ls -la ./android
+      - name: Set up Base64 Encoded Value
+        run: echo "MY_ENCODED_VARIABLE=VEVTVF9TRUNSRVQK" >> $GITHUB_ENV
+      - name: Set up environment variables
+        run: |
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEYSTORE_BASE64=${{ secrets.KEYSTORE_BASE64 }}" >> $GITHUB_ENV
+          echo "TEST_SECRET_BASE64=${{ secrets.TEST_SECRET_BASE64 }}" >> $GITHUB_ENV
+          echo "Decoded value: $(echo ${{ secrets.TEST_SECRET_BASE64 }} | base64 --decode)"
+          echo "::add-mask::${{ secrets.KEY_PASSWORD }}"
+          source $GITHUB_ENV
+      # ... other steps
+      #- name: Set up Google Services JSON
+      #  run: echo "GOOGLE_SERVICES_JSON_FILE=${{ secrets.GOOGLE_SERVICES_JSON_PATH }}" >> $GITHUB_ENV
+
+      # Disable cache for Dart SDK (optional)
+      - uses: actions/cache@v3
+        with:
+          path: |
+            !**/flutter/
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      - uses: flutter-actions/setup-flutter@v3
+        # (Optional) Specify Flutter version (e.g., with: flutter-version: 'stable')
+        with:
+          channel: stable
+          version: 3.10.5
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check Flutter and Dart versions
+        run: flutter --version
+
+#      - name: Set up Signing
+#        uses: actions/checkout@v3
+#        with:
+#          path: keystore.jks
+
+      - name: List files android folder
+        run: ls -la ./android
+
+      - name: List files merge_properties folder
+        run: ls -la ./.github/actions/merge_properties
+
+      - name: Chmod main.sh to executable
+        run: chmod +x ./.github/actions/merge_properties/main.sh
+
+      - name: List files merge_properties folder
+        run: ls -la ./.github/actions/merge_properties
+
+      - name: Merge properties with custom action
+        uses: ./.github/actions/merge_properties
+        with:
+          source-file: ./local.properties
+          target-file: ./android/local.properties
+
+      - name: Print origin android properties file
+        run: cat ./local.properties
+
+      - name: Print merged/destiny android properties file
+        run: cat ./android/local.properties
+
+      # ... other build steps
+      - name: Build debug AAB
+        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
+        #run: flutter build appbundle --profile --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
+        #run: flutter build appbundle --release --verbose
+        #run: flutter build bundle --release --verbose
+        #run: flutter build bundle --debug --verbose
+        #run: flutter build bundle --debug --keystore=keystore.jks --store-password=$KEYSTORE_PASSWORD --key-alias=$KEY_ALIAS --key-password=$KEY_PASSWORD
+
+      - name: Show current directory
+        run: pwd
+
+      - name: List files
+        run: ls -la
+
+      - name: List files android folder
+        run: ls -la ./android
+
+      - name: Print android properties file
+        run: cat ./android/local.properties
+
+      - name: Find AAB Files
+        run: |
+          find . -name "*.aab"
+
+      #No such file or directory
+#      - name: List files /build
+#        run: ls -la /build
+
+#      - name: List files build/app/outputs/bundle
+#        run: ls -la build/app/outputs/bundle
+
+      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android
+        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android
+
+      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/app
+        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/app
+
+      - name: List files /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build
+        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build
+
+#      - name: List files home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/build
+#        run: ls -la home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/build
+
+      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs
+        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs
+
+      #No such file or directory
+#      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/build/app/outputs
+#        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/android/build/app/outputs
+
+      #No such file or directory
+#      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle
+#        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle
+
+      #No such file or directory
+#      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/debug
+#        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/debug
+
+      #No such file or directory
+#      - name: List files of /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/release
+#        run: ls -la /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/release
+
+#      - name: List files of /
+#        run: ls -la /
+
+      - name: Sign AAB
+        run: |
+          echo "KEYSTORE_PASSWORD: ${KEYSTORE_PASSWORD}"
+          echo "KEY_ALIAS: ${KEY_ALIAS}"
+          jarsigner -verbose -debug -keystore /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks -storetype PKCS12 -storepass "${KEYSTORE_PASSWORD}" -signedjar app-signed.aab /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/release/app-release.aab "${KEY_ALIAS}"
+        #jarsigner -verbose -debug -keystore /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks -storetype PKCS12 -storepass "${KEYSTORE_PASSWORD}" -signedjar app-signed.aab /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/build/app/outputs/bundle/profile/app-profile.aab "${KEY_ALIAS}"
+        #keytool -list -keystore /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks
+
+#      - name: Align AAB
+#        run: zipalign -v 4 app-signed.aab app-aligned.aab
+
+      - name: Find AAB Files
+        run: |
+          find . -name "*.aab"
+
+      - name: Upload Signed AAB
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed-aab
+          path: ./app-signed.aab
+
+#      - name: Upload Profile AAB
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: profile-aab
+#          path: build/app/outputs/bundle/profile/app-profile.aab
+
+      - name: Upload Release AAB
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
