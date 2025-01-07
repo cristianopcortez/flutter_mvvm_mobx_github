@@ -39,20 +39,20 @@ jobs:
       - name: Verify set secret variables
         run: |
           required_secrets=(
-          FIREBASE_API_KEY
-          FIREBASE_APP_ID
-          GOOGLE_SERVICES_JSON_BASE64
-          KEYSTORE_BASE64
-          KEYSTORE_PASSWORD
-          KEY_ALIAS
-          KEY_PASSWORD
+            FIREBASE_API_KEY
+            FIREBASE_APP_ID
+            GOOGLE_SERVICES_JSON_BASE64
+            KEYSTORE_BASE64
+            KEYSTORE_PASSWORD
+            KEY_ALIAS
+            KEY_PASSWORD
           )
           
           for secret_name in "${required_secrets[@]}"; do
-          if [[ -z "${{ secrets."${secret_name}" }}" ]]; then
-           echo "::error::${secret_name} secret is not defined."
-           exit 1
-          fi
+            if [[ -z "${{ secrets."${secret_name}" }}" ]]; then
+               echo "::error::${secret_name} secret is not defined."
+               exit 1
+            fi
           done
       - name: Set up environment variables
         run: |
