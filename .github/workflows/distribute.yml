@@ -50,8 +50,8 @@ jobs:
           
           for secret_name in "${required_secrets[@]}"; do
             if [[ -z "${{ secrets."${secret_name}" }}" ]]; then
-             echo "::error::${secret_name} secret is not defined."
-             exit 1
+              echo "::error::${secret_name} secret is not defined."
+              exit 1
             fi
           done
       - name: Set up environment variables
