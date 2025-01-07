@@ -36,25 +36,36 @@ jobs:
         run: ls -la ./android
       - name: Set up Base64 Encoded Value
         run: echo "MY_ENCODED_VARIABLE=VEVTVF9TRUNSRVQK" >> $GITHUB_ENV
-      - name: Verify set secret variables
+      - name: Verify individual secrets
         run: |
-          required_secrets=(
-          FIREBASE_API_KEY
-          FIREBASE_APP_ID
-          GOOGLE_SERVICES_JSON_BASE64
-          KEYSTORE_BASE64
-          KEYSTORE_PASSWORD
-          KEY_ALIAS
-          KEY_PASSWORD
-          )
-          for secret_name in "${required_secrets[@]}"; do
-          # Use `eval` to access the secret dynamically
-          secret_value="${{ secrets[secret_name] }}"
-          if [[ -z "$secret_value" ]]; then
-           echo "::error::${secret_name} secret is not defined."
-           exit 1
+          if [[ -z "${{ secrets.FIREBASE_API_KEY }}" ]]; then
+            echo "::error::FIREBASE_API_KEY secret is not defined."
+            exit 1
           fi
-          done
+          if [[ -z "${{ secrets.FIREBASE_APP_ID }}" ]]; then
+            echo "::error::FIREBASE_APP_ID secret is not defined."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]]; then
+            echo "::error::GOOGLE_SERVICES_JSON_BASE64 secret is not defined."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.KEYSTORE_BASE64 }}" ]]; then
+            echo "::error::KEYSTORE_BASE64 secret is not defined."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.KEYSTORE_PASSWORD }}" ]]; then
+            echo "::error::KEYSTORE_PASSWORD secret is not defined."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.KEY_ALIAS }}" ]]; then
+            echo "::error::KEY_ALIAS secret is not defined."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.KEY_PASSWORD }}" ]]; then
+            echo "::error::KEY_PASSWORD secret is not defined."
+            exit 1
+          fi
       - name: Set up environment variables
         run: |
           echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
