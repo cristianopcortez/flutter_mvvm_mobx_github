@@ -47,12 +47,13 @@ jobs:
           KEY_ALIAS
           KEY_PASSWORD
           )
-          
           for secret_name in "${required_secrets[@]}"; do
-            if [[ -z "${{ secrets[${secret_name}] }}" ]]; then 
-              echo "::error::${secret_name} secret is not defined."
-              exit 1
-            fi
+          # Use `eval` to access the secret dynamically
+          secret_value="${{ secrets[secret_name] }}"
+          if [[ -z "$secret_value" ]]; then
+           echo "::error::${secret_name} secret is not defined."
+           exit 1
+          fi
           done
       - name: Set up environment variables
         run: |
