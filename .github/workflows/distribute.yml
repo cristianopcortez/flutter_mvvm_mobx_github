@@ -22,8 +22,8 @@ jobs:
         run: |
           if [[ -z "${{ secrets.KEYSTORE_BASE64 }}" ]]; then
             echo "::error::KEYSTORE_BASE64 secret is not defined."
-        #exit 1
-        #fi
+      #exit 1
+      #fi
           else
             tempfile=$(mktemp)
             echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$tempfile"
