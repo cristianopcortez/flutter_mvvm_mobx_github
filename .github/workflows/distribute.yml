@@ -16,17 +16,11 @@ jobs:
           echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
       - name: Decode Keystore
         run: |
-      #if [[ -z "${{ secrets.KEYSTORE_BASE64 }}" ]]; then
-      #echo "::error::KEYSTORE_BASE64 secret is not defined."
-      #exit 1
-      #fi
-      #else
-            tempfile=$(mktemp)
-            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$tempfile"
-            touch keystore.jks
-            cat "$tempfile" >> keystore.jks
-            rm "$tempfile"
-      #fi
+          tempfile=$(mktemp)
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$tempfile"
+          touch keystore.jks
+          cat "$tempfile" >> keystore.jks
+          rm "$tempfile"
       #echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks
       - name: Generate local.properties
         run: |
