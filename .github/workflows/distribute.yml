@@ -16,8 +16,9 @@ jobs:
           if [[ -z "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]]; then
             echo "::error::GOOGLE_SERVICES_JSON_BASE64 secret is not defined."
             exit 1
+          else
+            echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
           fi
-          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
       - name: Decode Keystore
         run: |
       #if [[ -z "${{ secrets.KEYSTORE_BASE64 }}" ]]; then
