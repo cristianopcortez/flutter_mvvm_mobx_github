@@ -136,11 +136,11 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
   }
 
   @override
-  bool setReloadFlag(bool reloadFlag) {
+  bool setReloadFlag(bool boolReloadFlag) {
     final _$actionInfo = _$_VideoPlayerControllerStoreActionController
         .startAction(name: '_VideoPlayerControllerStore.setReloadFlag');
     try {
-      return super.setReloadFlag(reloadFlag);
+      return super.setReloadFlag(boolReloadFlag);
     } finally {
       _$_VideoPlayerControllerStoreActionController.endAction(_$actionInfo);
     }

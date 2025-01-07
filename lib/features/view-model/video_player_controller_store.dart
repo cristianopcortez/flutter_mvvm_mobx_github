@@ -46,9 +46,9 @@ abstract class _VideoPlayerControllerStore with Store {
   }
 
   @action
-  bool setReloadFlag(bool reloadFlag) {
-    reloadFlag = !reloadFlag;
-    return !reloadFlag;
+  bool setReloadFlag(bool boolReloadFlag) {
+    reloadFlag = !boolReloadFlag;
+    return reloadFlag;
   }
 
   @action
