@@ -35,18 +35,26 @@ void main() async {
         ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
         : '';
     await Firebase.initializeApp(
-        options: firebaseOptions(apiKey,
-            firebaseMessagingSenderID,
-            appID, firebaseProjectID, firebaseProjectStorageBucket)
-    ).catchError((e){
+      options: firebaseOptions(
+        apiKey,
+        firebaseMessagingSenderID,
+        appID,
+        firebaseProjectID,
+        firebaseProjectStorageBucket,
+      ),
+    ).catchError((e) {
       if (kDebugMode) {
-        print(" Error : ${e.toString()}");
+        print('Failed with error code: ${e.code}');
+        print("Error: ${e.message}");
       }
+      // Optionally rethrow the error if you want the error to propagate further.
+      // throw e;
     }).whenComplete(() {
       if (kDebugMode) {
-        print("completed");
+        print("Initialization completed");
       }
     });
+
     runZonedGuarded(() async {
       runApp(
         Provider<VideoPlayerControllerStore>(
