@@ -34,6 +34,9 @@ void main() async {
     String firebaseProjectStorageBucket = Platform.isAndroid
         ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
         : '';
+    if (kDebugMode) {
+      print("Firebase.initializeApp");
+    }
     await Firebase.initializeApp(
       options: firebaseOptions(
         apiKey,
@@ -44,16 +47,25 @@ void main() async {
       ),
     ).catchError((e) {
       if (kDebugMode) {
-        print('Failed with error code: ${e.code}');
-        print("Error: ${e.message}");
+        print("Exception Type: ${e.runtimeType}");
       }
-      // Optionally rethrow the error if you want the error to propagate further.
-      // throw e;
+      if (e is FirebaseException) {
+        if (kDebugMode) {
+          print("Firebase Error Code: ${e.code}");
+          print("Firebase Error Message: ${e.message}");
+        }
+      } else {
+        if (kDebugMode) {
+          print("Unknown Error:");
+          print(e.toString());
+        }
+      }
     }).whenComplete(() {
       if (kDebugMode) {
         print("Initialization completed");
       }
     });
+
 
     runZonedGuarded(() async {
       runApp(
