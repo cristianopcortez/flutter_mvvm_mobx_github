@@ -37,7 +37,7 @@ void main() async {
         ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
         : '';
     // if (kDebugMode) {
-      print("Firebase.initializeApp");
+      debugPrint("Firebase.initializeApp");
     // }
     await Firebase.initializeApp(
       options: firebaseOptions(
@@ -49,22 +49,22 @@ void main() async {
       ),
     ).catchError((e) {
       // if (kDebugMode) {
-        print("Exception Type: ${e.runtimeType}");
+        debugPrint("Exception Type: ${e.runtimeType}");
       // }
       if (e is FirebaseException) {
         // if (kDebugMode) {
-          print("Firebase Error Code: ${e.code}");
-          print("Firebase Error Message: ${e.message}");
+          debugPrint("Firebase Error Code: ${e.code}");
+          debugPrint("Firebase Error Message: ${e.message}");
         // }
       } else {
         // if (kDebugMode) {
-          print("Unknown Error:");
-          print(e.toString());
+          debugPrint("Unknown Error:");
+          debugPrint(e.toString());
         // }
       }
     }).whenComplete(() {
       // if (kDebugMode) {
-        print("Initialization completed");
+        debugPrint("Initialization completed");
       // }
     });
 
