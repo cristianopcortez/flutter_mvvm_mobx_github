@@ -95,7 +95,7 @@ android {
         }
         release {
             minifyEnabled false // Disable obfuscation for debugging
-            shrinkResources true
+            shrinkResources false // Disable obfuscation for debugging
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             // TODO: Add your own signing config for the release build.
