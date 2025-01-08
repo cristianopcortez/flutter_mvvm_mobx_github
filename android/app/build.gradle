@@ -49,8 +49,8 @@ android {
         targetSdk = flutter.targetSdkVersion
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
-        versionCode 10002
-        versionName "1.0.002-internal"
+        versionCode 10003
+        versionName "1.0.003-internal"
 
         ndk {
             debugSymbolLevel 'FULL' // Inclui símbolos de depuração completos.
@@ -94,7 +94,7 @@ android {
             debuggable true
         }
         release {
-            minifyEnabled true
+            minifyEnabled false // Disable obfuscation for debugging
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 

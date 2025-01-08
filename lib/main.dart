@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,13 @@ import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
 import 'features/view/ProductHomePage.dart';
 
 void main() async {
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    // Log to your backend or analytics
+    print(details.exceptionAsString());
+  };
+
   WidgetsFlutterBinding.ensureInitialized();
     String apiKey = Platform.isAndroid
         ? const String.fromEnvironment('FIREBASE_API_KEY') ?? ''
@@ -39,12 +47,18 @@ void main() async {
         print("completed");
       }
     });
-  runApp(
-    Provider<VideoPlayerControllerStore>(
-      create: (_) => VideoPlayerControllerStore(),
-      child: const MyApp(),
-    ),
-  );
+    runZonedGuarded(() async {
+      runApp(
+        Provider<VideoPlayerControllerStore>(
+          create: (_) => VideoPlayerControllerStore(),
+          child: const MyApp(),
+        ),
+      );
+    }, (error, stackTrace) {
+      // Log to your backend or analytics
+      print('Caught by runZonedGuarded: $error');
+      print('Stack trace: $stackTrace');
+    });
 }
 
 FirebaseOptions firebaseOptions(
