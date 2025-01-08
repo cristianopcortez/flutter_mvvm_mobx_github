@@ -15,7 +15,9 @@ void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     // Log to your backend or analytics
-    print(details.exceptionAsString());
+    // if (kDebugMode) {
+      print(details.exceptionAsString());
+    // }
   };
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +36,9 @@ void main() async {
     String firebaseProjectStorageBucket = Platform.isAndroid
         ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
         : '';
-    if (kDebugMode) {
+    // if (kDebugMode) {
       print("Firebase.initializeApp");
-    }
+    // }
     await Firebase.initializeApp(
       options: firebaseOptions(
         apiKey,
@@ -46,24 +48,24 @@ void main() async {
         firebaseProjectStorageBucket,
       ),
     ).catchError((e) {
-      if (kDebugMode) {
+      // if (kDebugMode) {
         print("Exception Type: ${e.runtimeType}");
-      }
+      // }
       if (e is FirebaseException) {
-        if (kDebugMode) {
+        // if (kDebugMode) {
           print("Firebase Error Code: ${e.code}");
           print("Firebase Error Message: ${e.message}");
-        }
+        // }
       } else {
-        if (kDebugMode) {
+        // if (kDebugMode) {
           print("Unknown Error:");
           print(e.toString());
-        }
+        // }
       }
     }).whenComplete(() {
-      if (kDebugMode) {
+      // if (kDebugMode) {
         print("Initialization completed");
-      }
+      // }
     });
 
 
