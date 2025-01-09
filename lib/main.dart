@@ -30,7 +30,9 @@ void main() async {
   //   // }
   // };
 
+  BindingBase.debugZoneErrorsAreFatal = true; // Makes zone errors fatal during debugging
   WidgetsFlutterBinding.ensureInitialized();
+
     String apiKey = Platform.isAndroid
         ? const String.fromEnvironment('FIREBASE_API_KEY') ?? ''
         : '';
@@ -58,6 +60,9 @@ void main() async {
         firebaseProjectStorageBucket,
       ),
     )
+        .catchError((e) {
+      logger.e("Error Firebase.initializeApp"); // Error
+    })
     //     .catchError((e) {
     //   // if (kDebugMode) {
     //     debugPrint("Exception Type: ${e.runtimeType}");
@@ -76,6 +81,7 @@ void main() async {
     // })
         .whenComplete(() {
       // if (kDebugMode) {
+        logger.d("Initialization completed");
         debugPrint("Initialization completed");
       // }
     });
@@ -83,18 +89,18 @@ void main() async {
   // Enable Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-    runZonedGuarded(() async {
-      runApp(
-        Provider<VideoPlayerControllerStore>(
-          create: (_) => VideoPlayerControllerStore(),
-          child: const MyApp(),
-        ),
-      );
-    }, (error, stackTrace) {
-      // Log to your backend or analytics
-      print('Caught by runZonedGuarded: $error');
-      print('Stack trace: $stackTrace');
-    });
+  runZonedGuarded(() async {
+    runApp(
+      Provider<VideoPlayerControllerStore>(
+        create: (_) => VideoPlayerControllerStore(),
+        child: const MyApp(),
+      ),
+    );
+  }, (error, stackTrace) {
+    // Log to your backend or analytics
+    print('Caught by runZonedGuarded: $error');
+    print('Stack trace: $stackTrace');
+  });
 }
 
 FirebaseOptions firebaseOptions(
