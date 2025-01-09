@@ -51,6 +51,7 @@ void main() async {
     // if (kDebugMode) {
       debugPrint("Firebase.initializeApp");
     // }
+  try {
     await Firebase.initializeApp(
       options: firebaseOptions(
         apiKey,
@@ -59,10 +60,23 @@ void main() async {
         firebaseProjectID,
         firebaseProjectStorageBucket,
       ),
-    )
-        .catchError((e) {
-      logger.e("Error Firebase.initializeApp"); // Error
-    })
+    ).whenComplete(() {
+      // if (kDebugMode) {
+      logger.d("Initialization completed");
+      debugPrint("Initialization completed");
+      // }
+    });
+  } catch (e, stackTrace) {
+    logger.e(
+        "Error Firebase.initializeApp",
+        time: DateTime.now(),
+        error: e,
+        stackTrace: stackTrace
+    );
+  }
+    //     .catchError((e) {
+    //   logger.e("Error Firebase.initializeApp"); // Error
+    // })
     //     .catchError((e) {
     //   // if (kDebugMode) {
     //     debugPrint("Exception Type: ${e.runtimeType}");
@@ -79,12 +93,6 @@ void main() async {
     //     // }
     //   }
     // })
-        .whenComplete(() {
-      // if (kDebugMode) {
-        logger.d("Initialization completed");
-        debugPrint("Initialization completed");
-      // }
-    });
 
   // Enable Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
