@@ -89,6 +89,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # or 'zulu', 'adopt', etc.
+          java-version: '18'
+
       - uses: flutter-actions/setup-flutter@v3
         # (Optional) Specify Flutter version (e.g., with: flutter-version: 'stable')
         with:

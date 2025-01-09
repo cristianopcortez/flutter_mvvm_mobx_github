@@ -41,6 +41,11 @@ android {
     kotlin {
         jvmToolchain(18)
     }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(18)
+        }
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
