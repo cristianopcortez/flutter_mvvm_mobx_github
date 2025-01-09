@@ -1,6 +1,8 @@
 plugins {
     id "com.android.application"
-     id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
+    // Add the Crashlytics Gradle plugin
+    id 'com.google.firebase.crashlytics'
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -122,6 +124,11 @@ android {
 
             // Temporarily set debuggable to true for debugging
             debuggable true
+
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'libs'
+            }
         }
     }
 }
@@ -129,6 +136,11 @@ android {
 dependencies {
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:33.7.0')
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 

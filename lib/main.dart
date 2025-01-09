@@ -4,21 +4,34 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
 import 'features/view-model/video_player_controller_store.dart';
 import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
+import 'package:logger/logger.dart';
 
 import 'features/view/ProductHomePage.dart';
 
 void main() async {
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    // Log to your backend or analytics
-    // if (kDebugMode) {
-      print(details.exceptionAsString());
-    // }
-  };
+  // Enable Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  final logger = Logger();
+
+  logger.i("Info message"); // Information
+  logger.e("Error message"); // Error
+  logger.d("Debug message"); // Debug
+
+  stderr.writeln("This should appear in logcat.");
+
+  // FlutterError.onError = (FlutterErrorDetails details) {
+  //   FlutterError.presentError(details);
+  //   // Log to your backend or analytics
+  //   // if (kDebugMode) {
+  //     print(details.exceptionAsString());
+  //   // }
+  // };
 
   WidgetsFlutterBinding.ensureInitialized();
     String apiKey = Platform.isAndroid
