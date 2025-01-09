@@ -57,22 +57,24 @@ void main() async {
         firebaseProjectID,
         firebaseProjectStorageBucket,
       ),
-    ).catchError((e) {
-      // if (kDebugMode) {
-        debugPrint("Exception Type: ${e.runtimeType}");
-      // }
-      if (e is FirebaseException) {
-        // if (kDebugMode) {
-          debugPrint("Firebase Error Code: ${e.code}");
-          debugPrint("Firebase Error Message: ${e.message}");
-        // }
-      } else {
-        // if (kDebugMode) {
-          debugPrint("Unknown Error:");
-          debugPrint(e.toString());
-        // }
-      }
-    }).whenComplete(() {
+    )
+    //     .catchError((e) {
+    //   // if (kDebugMode) {
+    //     debugPrint("Exception Type: ${e.runtimeType}");
+    //   // }
+    //   if (e is FirebaseException) {
+    //     // if (kDebugMode) {
+    //       debugPrint("Firebase Error Code: ${e.code}");
+    //       debugPrint("Firebase Error Message: ${e.message}");
+    //     // }
+    //   } else {
+    //     // if (kDebugMode) {
+    //       debugPrint("Unknown Error:");
+    //       debugPrint(e.toString());
+    //     // }
+    //   }
+    // })
+        .whenComplete(() {
       // if (kDebugMode) {
         debugPrint("Initialization completed");
       // }
