@@ -114,37 +114,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: OverlappingButtonNativeVideoPlayer(videoPath: '',),
+      theme: ThemeData(
+        splashFactory: NoSplash.splashFactory, // Remove splash effects
+      ),
+      home: const OverlappingButtonNativeVideoPlayer(videoPath: '',),
     );
   }
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          var snackBar = SnackBar(content: Text(snapshot.error.toString()));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return const ProductHomePage();
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return const CircularProgressIndicator();
-      },
-    );
-  }
-}
