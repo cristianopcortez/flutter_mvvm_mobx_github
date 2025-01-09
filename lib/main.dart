@@ -14,9 +14,6 @@ import 'features/view/ProductHomePage.dart';
 
 void main() async {
 
-  // Enable Crashlytics
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
   final logger = Logger();
 
   logger.i("Info message"); // Information
@@ -81,6 +78,8 @@ void main() async {
       // }
     });
 
+  // Enable Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
     runZonedGuarded(() async {
       runApp(
