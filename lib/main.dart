@@ -17,11 +17,15 @@ void main() async {
   // // Ensure Flutter bindings are initialized before anything else
   // WidgetsFlutterBinding.ensureInitialized();
 
-  final logger = Logger();
+  // final logger = Logger();
+  final logger = Logger(
+    printer: PrettyPrinter(),
+    output: ConsoleOutput(), // Ensure logs are sent to the console
+  );
 
-  // logger.i("Info message"); // Information
-  // logger.e("Error message"); // Error
-  // logger.d("Debug message"); // Debug
+  logger.i("Info message"); // Information
+  logger.e("Error message"); // Error
+  logger.d("Debug message"); // Debug
 
   // stderr.writeln("This should appear in logcat.");
 
@@ -88,6 +92,7 @@ void main() async {
 
     } catch (e, stackTrace) {
       // Handle Firebase initialization failure
+      print("Error caught: $e");
       logger.e(
         "Error during Firebase.initializeApp",
         time: DateTime.now(),
@@ -100,12 +105,14 @@ void main() async {
     // Log to your backend or analytics
     // print('Caught by runZonedGuarded: $error');
     // print('Stack trace: $stackTrace');
+    print("Error caught: $error");
     logger.e(
       "Caught by runZonedGuarded: ",
       time: DateTime.now(),
       error: error,
       stackTrace: stackTrace,
     );
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
 
