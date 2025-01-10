@@ -12,7 +12,7 @@ import 'package:logger/logger.dart';
 
 void main() async {
 
-  BindingBase.debugZoneErrorsAreFatal = false; // Makes zone errors fatal during debugging
+  BindingBase.debugZoneErrorsAreFatal = true; // Makes zone errors fatal during debugging
 
   // // Ensure Flutter bindings are initialized before anything else
   // WidgetsFlutterBinding.ensureInitialized();
