@@ -107,8 +107,8 @@ android {
             debuggable true
         }
         release {
-            minifyEnabled false // Disable obfuscation for debugging
-            shrinkResources false // Disable obfuscation for debugging
+            minifyEnabled true // Disable obfuscation for debugging
+            shrinkResources true // Disable obfuscation for debugging
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             // TODO: Add your own signing config for the release build.
@@ -134,7 +134,7 @@ android {
             buildConfigField "String", "KEYSTORE_BASE64", "\"$keyStoreBase64\""
 
             // Temporarily set debuggable to true for debugging
-            debuggable true
+            debuggable false
 
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
