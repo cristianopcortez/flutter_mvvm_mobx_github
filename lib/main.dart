@@ -64,6 +64,7 @@ void main() async {
     // }
     try {
       await Firebase.initializeApp(
+        name: appID,
         options: firebaseOptions(
           apiKey,
           firebaseMessagingSenderID,
