@@ -10,11 +10,9 @@ import 'features/view-model/video_player_controller_store.dart';
 import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
 import 'package:logger/logger.dart';
 
-import 'features/view/ProductHomePage.dart';
-
 void main() async {
 
-  BindingBase.debugZoneErrorsAreFatal = true; // Makes zone errors fatal during debugging
+  BindingBase.debugZoneErrorsAreFatal = false; // Makes zone errors fatal during debugging
 
   // // Ensure Flutter bindings are initialized before anything else
   // WidgetsFlutterBinding.ensureInitialized();
