@@ -14,10 +14,10 @@ import 'features/view/ProductHomePage.dart';
 
 void main() async {
 
-  BindingBase.debugZoneErrorsAreFatal = false; // Makes zone errors fatal during debugging
+  BindingBase.debugZoneErrorsAreFatal = true; // Makes zone errors fatal during debugging
 
-  // Ensure Flutter bindings are initialized before anything else
-  WidgetsFlutterBinding.ensureInitialized();
+  // // Ensure Flutter bindings are initialized before anything else
+  // WidgetsFlutterBinding.ensureInitialized();
 
   final logger = Logger();
 
@@ -54,6 +54,9 @@ void main() async {
       : '';
 
   runZonedGuarded(() async {
+    // Ensure Flutter bindings are initialized before anything else
+    WidgetsFlutterBinding.ensureInitialized();
+
     // if (kDebugMode) {
     debugPrint("Firebase.initializeApp");
     // }
