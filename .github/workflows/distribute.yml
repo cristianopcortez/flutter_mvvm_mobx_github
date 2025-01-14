@@ -2,8 +2,8 @@ name: Distribute App
 
 on:
   push:
-    branches: [develop]
-    #branches: [master]
+    branches: [master]
+    #branches: [develop]
     #branches: [feature/change_branch_to_start_br]
 
 jobs:
