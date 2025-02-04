@@ -1,5 +1,9 @@
 workflows:
   your-workflow-name:
+    environment:
+      groups:
+        - FIREBASE_CREDENTIALS  # Import the FIREBASE_CREDENTIALS group
+        - MERCADO_PAGO              # Import the MERCADO PAGO group
     scripts:
       - name: Decode google-services.json
         script: |
