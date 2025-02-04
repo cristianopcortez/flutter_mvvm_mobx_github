@@ -1,0 +1,7 @@
+workflows:
+  your-workflow-name:
+    scripts:
+      - name: Decode google-services.json
+        script: |
+          echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 -d > android/app/google-services.json
+    # ... rest of your Codemagic configuration (build commands, etc.)
