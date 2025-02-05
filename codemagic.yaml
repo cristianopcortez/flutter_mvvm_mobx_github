@@ -1,6 +1,7 @@
 workflows:
   your-workflow-name:
     environment:
+      flutter: 3.22.2 # stable # or '3.7.6', 'beta', 'master', etc.
       vars:
         JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # 1.8.0_412 - Or the appropriate path for the JDK you install
       groups:
@@ -16,17 +17,8 @@ workflows:
       - name: Decode Google Play Service Account JSON
         script: |
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
-      - name: Install Flutter 3.22.2
+      - name: Verify Flutter 3.22.2
         script: |
-          # Download Flutter 3.22.2
-          wget https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_3.22.2-stable.tar.xz
-          
-          # Extract the archive
-          tar xf flutter_linux_3.22.2-stable.tar.xz
-
-          # Add Flutter to PATH
-          export PATH="$PWD/flutter/bin:$PATH"
-
           # Verify installation
           flutter --version
       - name: Install JDK 18
