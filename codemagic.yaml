@@ -2,8 +2,6 @@ workflows:
   your-workflow-name:
     environment:
       flutter: 3.22.2 # stable # or '3.7.6', 'beta', 'master', etc.
-      vars:
-        JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # 1.8.0_412 - Or the appropriate path for the JDK you install
       groups:
         - FIREBASE_CREDENTIALS  # Import the FIREBASE_CREDENTIALS group
         - MERCADO_PAGO              # Import the MERCADO PAGO group
@@ -19,8 +17,8 @@ workflows:
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
       - name: Install JDK 18
         script: |
-          # Install Zulu JDK 18 using Homebrew
-          brew install zulu18
+          # Install Temurin JDK 18 using Homebrew
+          brew install temurin18
 
           # Set JAVA_HOME
           export JAVA_HOME=$(/usr/libexec/java_home -v 18)
