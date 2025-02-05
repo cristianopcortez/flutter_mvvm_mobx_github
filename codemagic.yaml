@@ -17,10 +17,6 @@ workflows:
       - name: Decode Google Play Service Account JSON
         script: |
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
-      - name: Verify Flutter 3.22.2
-        script: |
-          # Verify installation
-          flutter doctor -v
       - name: Install JDK 18
         script: |
           sudo apt-get update  # Update package lists (if needed)
@@ -29,6 +25,10 @@ workflows:
           # Verify the installation and set JAVA_HOME
           export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # Or the correct path if different
           java -version # Check if the correct JDK is installed
+      - name: Verify Flutter 3.22.2
+        script: |
+          # Verify installation
+          flutter doctor -v
       - name: Build Android App
         script: |
           flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
