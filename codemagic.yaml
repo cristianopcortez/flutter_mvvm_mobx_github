@@ -2,7 +2,7 @@ workflows:
   your-workflow-name:
     environment:
       vars:
-        JAVA_HOME: /opt/jdk/18.0.2+8 # Or the appropriate path for the JDK you install
+        JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # 1.8.0_412 - Or the appropriate path for the JDK you install
       groups:
         - FIREBASE_CREDENTIALS  # Import the FIREBASE_CREDENTIALS group
         - MERCADO_PAGO              # Import the MERCADO PAGO group
@@ -16,10 +16,10 @@ workflows:
       - name: Install JDK 18
         script: |
           sudo apt-get update  # Update package lists (if needed)
-          sudo apt-get install -y temurin-18 # Install Temurin JDK 18 (or the JDK of your choice)
+          sudo apt-get install -y zulu-8 # Install Zulu JDK 18 (or the JDK of your choice)
 
           # Verify the installation and set JAVA_HOME
-          export JAVA_HOME=/opt/jdk/18.0.2+8 # Or the correct path if different
+          export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # Or the correct path if different
           java -version # Check if the correct JDK is installed
       - name: Build Android App
         script: |
