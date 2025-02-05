@@ -1,6 +1,8 @@
 workflows:
   your-workflow-name:
     environment:
+      vars:
+        JAVA_HOME: /opt/jdk/18.0.2+8 # Or the appropriate path for the JDK you install
       groups:
         - FIREBASE_CREDENTIALS  # Import the FIREBASE_CREDENTIALS group
         - MERCADO_PAGO              # Import the MERCADO PAGO group
@@ -11,6 +13,14 @@ workflows:
       - name: Decode Google Play Service Account JSON
         script: |
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
+      - name: Install JDK 18
+        script: |
+          sudo apt-get update  # Update package lists (if needed)
+          sudo apt-get install -y temurin-18 # Install Temurin JDK 18 (or the JDK of your choice)
+
+          # Verify the installation and set JAVA_HOME
+          export JAVA_HOME=/opt/jdk/18.0.2+8 # Or the correct path if different
+          java -version # Check if the correct JDK is installed
       - name: Build Android App
         script: |
           flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
