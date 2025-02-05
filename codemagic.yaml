@@ -11,6 +11,9 @@ workflows:
       - name: Decode Google Play Service Account JSON
         script: |
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
+      - name: Build Android App
+        script: |
+          flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
 
 publishing:
   google_play:
