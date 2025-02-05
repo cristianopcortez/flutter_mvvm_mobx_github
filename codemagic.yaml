@@ -19,12 +19,14 @@ workflows:
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
       - name: Install JDK 18
         script: |
-          sudo apt-get update  # Update package lists (if needed)
-          sudo apt-get install -y zulu-8 # Install Zulu JDK 18 (or the JDK of your choice)
+          # Install Zulu JDK 18 using Homebrew
+          brew install zulu18
 
-          # Verify the installation and set JAVA_HOME
-          export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home # Or the correct path if different
-          java -version # Check if the correct JDK is installed
+          # Set JAVA_HOME
+          export JAVA_HOME=$(/usr/libexec/java_home -v 18)
+
+          # Verify installation
+          java -version
       - name: Verify Flutter 3.22.2
         script: |
           # Verify installation
