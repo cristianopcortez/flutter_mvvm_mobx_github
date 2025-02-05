@@ -20,7 +20,7 @@ workflows:
       - name: Verify Flutter 3.22.2
         script: |
           # Verify installation
-          flutter --version
+          flutter doctor -v
       - name: Install JDK 18
         script: |
           sudo apt-get update  # Update package lists (if needed)
