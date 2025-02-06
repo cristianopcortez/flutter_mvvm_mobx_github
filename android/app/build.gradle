@@ -29,22 +29,29 @@ if (flutterVersionName == null) {
 android {
     namespace = "br.com.ccortez.mobx_mvvm"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+//    ndkVersion = flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "17"
     }
     kotlin {
-        jvmToolchain(18)
+        jvmToolchain(17)
     }
     java {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
         toolchain {
-            languageVersion = JavaLanguageVersion.of(18)
+            languageVersion = JavaLanguageVersion.of(17)
         }
+    }
+
+    buildFeatures {
+        android.buildFeatures.buildConfig true
     }
 
     defaultConfig {
@@ -60,6 +67,7 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
+        minSdkVersion 28
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
         versionCode 10009
@@ -139,6 +147,30 @@ android {
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 unstrippedNativeLibsDir 'libs'
+            }
+        }
+    }
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace = project.group.toString()  // Set namespace as fallback
+                }
+                project.tasks.whenTaskAdded { task ->
+                    if (task.name.contains('processDebugManifest') || task.name.contains('processReleaseManifest')) {
+                        task.doFirst {
+                            File manifestFile = file("${projectDir}/src/main/AndroidManifest.xml")
+                            if (manifestFile.exists()) {
+                                String manifestContent = manifestFile.text
+                                if (manifestContent.contains('package=')) {
+                                    manifestContent = manifestContent.replaceAll(/package="[^"]*"/, "")
+                                    manifestFile.write(manifestContent)
+                                    println "Removed 'package' attribute from ${manifestFile}"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
