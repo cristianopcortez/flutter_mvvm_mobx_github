@@ -15,13 +15,13 @@ workflows:
       - name: Decode Google Play Service Account JSON
         script: |
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
-      - name: Install JDK 18
+      - name: Install JDK 17
         script: |
-          # Install Temurin JDK 18 using Homebrew
-          brew install temurin18
+          # Install Temurin JDK 17 using Homebrew
+          brew install temurin17
 
           # Set JAVA_HOME
-          export JAVA_HOME=$(/usr/libexec/java_home -v 18)
+          export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 
           # Verify installation
           java -version
