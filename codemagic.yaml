@@ -38,7 +38,7 @@ workflows:
           flutter pub get
       - name: Build Android App
         script: |
-          flutter build appbundle --release --verbose --no-incremental --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
+          flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
 
 publishing:
   google_play:
