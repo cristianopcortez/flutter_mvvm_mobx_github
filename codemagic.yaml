@@ -1,7 +1,7 @@
 workflows:
   android-build:  # Workflow for Android
     name: Android Build
-    instance_type: ubuntu-latest # Or a specific Ubuntu version if needed
+    instance_type: linux
     environment:
       flutter: 3.22.2 # stable # or '3.7.6', 'beta', 'master', etc.
       groups:
