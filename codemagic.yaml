@@ -1,5 +1,7 @@
 workflows:
-  your-workflow-name:
+  android-build:  # Workflow for Android
+    name: Android Build
+    instance_type: ubuntu-latest # Or a specific Ubuntu version if needed
     environment:
       flutter: 3.22.2 # stable # or '3.7.6', 'beta', 'master', etc.
       groups:
@@ -19,12 +21,13 @@ workflows:
           echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > google-play-service-account.json
       - name: Install JDK 17
         script: |
-          # Install Temurin JDK 17 using Homebrew
-          brew install temurin17
-
-          # Set JAVA_HOME
-          export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-
+          # Install Temurin JDK 17 (using a package manager like apt)
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk 
+          
+          # Set JAVA_HOME (adjust path if necessary)
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64  
+          
           # Verify installation
           java -version
       - name: Verify Flutter 3.22.2
