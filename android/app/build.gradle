@@ -116,6 +116,7 @@ android {
         }
         release {
             minifyEnabled true // Disable obfuscation for debugging
+            useProguard true  // Explicitly tell Gradle to use Proguard instead of R8
             shrinkResources true // Disable obfuscation for debugging
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 

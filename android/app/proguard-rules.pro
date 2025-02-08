@@ -1,16 +1,16 @@
 # Flutter-specific rules
 -keep class io.flutter.** { *; }
 -keep class io.flutter.embedding.** { *; }
-#-keep class io.flutter.app.** { *; }
+-keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.** { *; }
 -keep class io.flutter.util.** { *; }
 -keep class io.flutter.view.** { *; }
 -keep class com.google.android.gms.** {*;}
 # prevent R8 from removing the necessary classes:
 -keep class com.google.android.play.core.** { *; }
--keep class io.flutter.app.FlutterPlayStoreSplitApplication {
-    <init>();
-}
+#-keep class io.flutter.app.FlutterPlayStoreSplitApplication {
+#    <init>();
+#}
 -keep class org.bouncycastle.** { *; }
 -keep class org.conscrypt.** { *; }
 -keep class org.openjsse.** { *; }
