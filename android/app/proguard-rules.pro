@@ -6,6 +6,11 @@
 -keep class io.flutter.util.** { *; }
 -keep class io.flutter.view.** { *; }
 -keep class com.google.android.gms.** {*;}
+# prevent R8 from removing the necessary classes:
+-keep class com.google.android.play.core.** { *; }
+-keep class org.bouncycastle.** { *; }
+-keep class org.conscrypt.** { *; }
+-keep class org.openjsse.** { *; }
 
 # General Android ProGuard rules
 # Ensures that certain classes, methods, and fields are not removed or renamed
