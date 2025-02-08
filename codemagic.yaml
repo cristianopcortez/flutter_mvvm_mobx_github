@@ -16,8 +16,6 @@ workflows:
       cache_paths:
         - $FLUTTER_ROOT/.pub-cache
         - ~/.gradle/caches  # Include the Gradle user cache as well. This is good practice.
-    artifacts:
-      - /Users/builder/clone/build/**
     scripts:
       - name: Decode google-services.json
         script: |
@@ -45,16 +43,27 @@ workflows:
       - name: Install dependencies
         script: |
           flutter pub get
-      - name: Build Android App
+      - name: Build Android App (AAB with Flutter)
         script: |
-          flutter build appbundle --release --verbose --no-shrink --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER"
-      - name: Print missing rules
-        script: |
-          cat /Users/builder/clone/build/app/outputs/mapping/release/missing_rules.txt
-
-publishing:
-  google_play:
-    service_account_json_path: google-play-service-account.json # Use the file you just created
-    #... rest of your Google Play publishing config
-
-    # ... rest of your Codemagic configuration (build commands, etc.)
+          BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))
+          flutter build appbundle --release --verbose --no-shrink --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=FIREBASE_APP_ID="$FIREBASE_APP_ID" --dart-define=KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" --dart-define=KEY_ALIAS="$KEY_ALIAS" --dart-define=KEY_PASSWORD="$KEY_PASSWORD" --dart-define=KEYSTORE_BASE64="$KEYSTORE_BASE64" --dart-define=MP_ACCESS_TOKEN_SELLER="$MP_ACCESS_TOKEN_SELLER" \
+          --build-name=1.0.$BUILD_NUMBER \
+          --build-number=$BUILD_NUMBER
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+#      - /Users/builder/clone/build/**
+    publishing:
+      email:
+        recipients:
+          - cristianocortez@gmail.com
+#          - user_2@example.com
+        notify:
+          success: true
+          failure: false
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: $GOOGLE_PLAY_TRACK
+        submit_as_draft: true
+#        service_account_json_path: google-play-service-account.json # Use the file you just created
