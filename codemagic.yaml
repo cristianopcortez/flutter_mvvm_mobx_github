@@ -9,9 +9,8 @@ workflows:
         - MERCADO_PAGO              # Import the MERCADO PAGO group
     cache:
       cache_paths:
-        - $HOME/flutter
-        - .gradle/caches  # Correct way to specify Gradle cache directory
-        - $HOME/.gradle/caches  # Include the Gradle user cache as well. This is good practice.
+        - $FLUTTER_ROOT/.pub-cache
+        - ~/.gradle/caches  # Include the Gradle user cache as well. This is good practice.
     scripts:
       - name: Decode google-services.json
         script: |
