@@ -11,6 +11,8 @@ workflows:
       cache_paths:
         - $FLUTTER_ROOT/.pub-cache
         - ~/.gradle/caches  # Include the Gradle user cache as well. This is good practice.
+    artifacts:
+      - /Users/builder/clone/build/**
     scripts:
       - name: Decode google-services.json
         script: |
