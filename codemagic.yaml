@@ -3,6 +3,11 @@ workflows:
     name: Android Build
     instance_type: mac_mini_m2  # Use mac_mini_m2 for macOS M2
     environment:
+      android_signing:
+        - mobxmvvm
+      vars:
+        PACKAGE_NAME: "br.com.ccortez.mobx_mvvm" # <-- Put your package name here
+        GOOGLE_PLAY_TRACK: "alpha"
       flutter: 3.22.2 # stable # or '3.7.6', 'beta', 'master', etc.
       groups:
         - FIREBASE_CREDENTIALS  # Import the FIREBASE_CREDENTIALS group
@@ -30,6 +35,9 @@ workflows:
 
           # Verify installation
           java -version
+      - name: Set up local.properties
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
       - name: Verify Flutter 3.22.2
         script: |
           # Verify installation
