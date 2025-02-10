@@ -222,7 +222,7 @@ jobs:
           find . -name "*.aab"
 
       - name: Upload Signed AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: signed-aab
           path: ./app-signed.aab
