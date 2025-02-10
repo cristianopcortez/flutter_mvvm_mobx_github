@@ -145,10 +145,10 @@ jobs:
       - name: Print merged/destiny android properties file
         run: cat ./android/local.properties
 
-      # DEBUGGING STEPS
-      - name: List files in native_video_view (before build)
-        run: |
-          ls -la /home/runner/work/_temp/pub-cache/git/native_video_view-*/android/lib
+#      # DEBUGGING STEPS
+#      - name: List files in native_video_view (before build)
+#        run: |
+#          ls -la /home/runner/work/_temp/pub-cache/git/native_video_view-*/android/lib
 
       # ... other build steps
       - name: Build debug AAB
