@@ -80,13 +80,19 @@ jobs:
       #- name: Set up Google Services JSON
       #  run: echo "GOOGLE_SERVICES_JSON_FILE=${{ secrets.GOOGLE_SERVICES_JSON_PATH }}" >> $GITHUB_ENV
 
-      # Disable cache for Dart SDK (optional)
       - uses: actions/cache@v3
         with:
           path: |
-            !**/flutter/
-          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+            ~/.pub-cache/git
+            ~/.pub-cache/hosted
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+            android/app/build
+            !**/flutter/  # Exclude the Flutter SDK itself
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}-${{ hashFiles('android/build.gradle') }}-${{ hashFiles('android/app/build.gradle') }}
           restore-keys: |
+            ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}-
             ${{ runner.os }}-flutter-
 
       - name: Set up JDK
@@ -138,6 +144,11 @@ jobs:
 
       - name: Print merged/destiny android properties file
         run: cat ./android/local.properties
+
+      # DEBUGGING STEPS
+      - name: List files in native_video_view (before build)
+        run: |
+          ls -la /home/runner/work/_temp/pub-cache/git/native_video_view-*/android/lib
 
       # ... other build steps
       - name: Build debug AAB
