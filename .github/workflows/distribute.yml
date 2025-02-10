@@ -2,8 +2,8 @@ name: Distribute App
 
 on:
   push:
-    branches: [master]
-    #branches: [develop]
+#    branches: [master]
+    branches: [develop]
     #branches: [feature/change_branch_to_start_br]
 
 jobs:
@@ -234,7 +234,7 @@ jobs:
 #          path: build/app/outputs/bundle/profile/app-profile.aab
 
       - name: Upload Release AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
