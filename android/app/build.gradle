@@ -70,8 +70,8 @@ android {
         minSdkVersion 28
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
-        versionCode 10009
-        versionName "1.0.009-internal"
+        versionCode 10010
+        versionName "1.0.010-internal"
 
         ndk {
             debugSymbolLevel 'FULL' // Inclui símbolos de depuração completos.
