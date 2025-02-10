@@ -620,7 +620,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1a5a244bad20a46232cdd81822f08fdf0579a7e1"
+      ref: namespace-fix
       resolved-ref: "1a5a244bad20a46232cdd81822f08fdf0579a7e1"
       url: "https://github.com/cristianopcortez/native_video_view.git"
     source: git

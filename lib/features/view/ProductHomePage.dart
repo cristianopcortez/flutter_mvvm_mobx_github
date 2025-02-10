@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_mvvm_mobx_github/features/view/CheckoutPage.dart';
 import 'package:provider/provider.dart';
 import '../view-model/produto_store.dart';
 import '../view-model/video_player_controller_store.dart';
@@ -32,6 +33,18 @@ class _ProductHomePageState extends State<ProductHomePage> {
       appBar: AppBar(
         title: const Text('Produtos'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              // Navigate to the CartPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CheckoutPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Observer(
         builder: (_) {

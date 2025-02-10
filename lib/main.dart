@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
+import 'features/view-model/cart_store.dart';
 import 'features/view-model/video_player_controller_store.dart';
 import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
 import 'package:logger/logger.dart';
@@ -14,20 +15,10 @@ void main() async {
 
   BindingBase.debugZoneErrorsAreFatal = true; // Makes zone errors fatal during debugging
 
-  // // Ensure Flutter bindings are initialized before anything else
-  // WidgetsFlutterBinding.ensureInitialized();
-
-  // final logger = Logger();
   final logger = Logger(
     printer: PrettyPrinter(),
     output: ConsoleOutput(), // Ensure logs are sent to the console
   );
-
-  logger.i("Info message"); // Information
-  logger.e("Error message"); // Error
-  logger.d("Debug message"); // Debug
-
-  // stderr.writeln("This should appear in logcat.");
 
   // Temporary local error logger
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -85,15 +76,19 @@ void main() async {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
       runApp(
-        Provider<VideoPlayerControllerStore>(
-          create: (_) => VideoPlayerControllerStore(),
+        MultiProvider(
+          providers: [
+            Provider<VideoPlayerControllerStore>(create: (_) => VideoPlayerControllerStore()),
+            Provider<CartStore>(create: (_) => CartStore()),
+          ],
           child: const MyApp(),
         ),
       );
 
+
     } catch (e, stackTrace) {
       // Handle Firebase initialization failure
-      print("Error caught: $e");
+      debugPrint("Error caught: $e");
       logger.e(
         "Error during Firebase.initializeApp",
         time: DateTime.now(),
@@ -106,7 +101,7 @@ void main() async {
     // Log to your backend or analytics
     // print('Caught by runZonedGuarded: $error');
     // print('Stack trace: $stackTrace');
-    print("Error caught: $error");
+    debugPrint("Error caught: $error");
     logger.e(
       "Caught by runZonedGuarded: ",
       time: DateTime.now(),
@@ -133,7 +128,6 @@ FirebaseOptions firebaseOptions(
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
