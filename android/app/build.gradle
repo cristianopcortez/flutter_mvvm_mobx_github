@@ -152,8 +152,8 @@ android {
             debuggable false
 
             firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-                unstrippedNativeLibsDir 'libs'
+                nativeSymbolUploadEnabled false
+//                unstrippedNativeLibsDir 'libs'
             }
         }
     }
