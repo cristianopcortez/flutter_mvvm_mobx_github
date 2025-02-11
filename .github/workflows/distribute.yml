@@ -2,7 +2,8 @@ name: Distribute App
 
 on:
   push:
-    branches: [develop]
+    branches: [last-working-ci]
+#    branches: [develop]
     #branches: [master]
     #branches: [feature/change_branch_to_start_br]
 
