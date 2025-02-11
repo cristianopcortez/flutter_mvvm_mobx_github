@@ -3,7 +3,8 @@ name: Distribute App
 on:
   push:
 #    branches: [master]
-    branches: [develop]
+#    branches: [develop]
+    branches: [fix/compile-jvm-18]
     #branches: [feature/change_branch_to_start_br]
 
 jobs:
@@ -101,7 +102,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # or 'zulu', 'adopt', etc.
-          java-version: '17'
+          java-version: '18'
 
       - name: Verify Java Version
         run: java -version
@@ -163,7 +164,7 @@ jobs:
 
       # ... other build steps
       - name: Build debug AAB
-        run: flutter build appbundle --release --no-shrink --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}" --dart-define=MP_ACCESS_TOKEN_SELLER="${{ secrets.MP_ACCESS_TOKEN_SELLER }}" --dart-define=MP_CREATE_PREFERENCE_HOST="${{ secrets.MP_CREATE_PREFERENCE_HOST }}"
+        run: flutter build appbundle --release --no-shrink --no-tree-shake-icons --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}" --dart-define=MP_ACCESS_TOKEN_SELLER="${{ secrets.MP_ACCESS_TOKEN_SELLER }}" --dart-define=MP_CREATE_PREFERENCE_HOST="${{ secrets.MP_CREATE_PREFERENCE_HOST }}"
 #        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}" --dart-define=MP_ACCESS_TOKEN_SELLER="${{ secrets.MP_ACCESS_TOKEN_SELLER }}" --dart-define=MP_CREATE_PREFERENCE_HOST="${{ secrets.MP_CREATE_PREFERENCE_HOST }}"
 #        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
         #run: flutter build appbundle --profile --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
