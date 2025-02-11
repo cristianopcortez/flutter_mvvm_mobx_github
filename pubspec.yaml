@@ -49,7 +49,7 @@ dependencies:
     git:
       url: https://github.com/cristianopcortez/native_video_view.git
 #      ref: namespace-fix
-      ref: 1a5a244bad20a46232cdd81822f08fdf0579a7e1
+      ref: 9c7e4343f9610211fd09b478bfa4d53b1d463ae5
   app_links: ^6.3.3
   flutter_custom_tabs: ^1.2.1
 
