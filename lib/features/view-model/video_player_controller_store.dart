@@ -119,6 +119,7 @@ abstract class _VideoPlayerControllerStore with Store {
     if (kDebugMode) {
       print('NativeVideoView on Store: disposed');
     }
+    controller?.stop();
     controller?.dispose(); // Dispose the VideoViewController
     controller = null;
     isInitialized = false;

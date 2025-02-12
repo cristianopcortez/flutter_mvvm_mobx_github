@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:cached_network_image_builder/cached_network_image_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mvvm_mobx_github/features/view/CheckoutPage.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 
 import '../model/produto.dart';
+import '../view-model/cart_store.dart';
 import '../view-model/produto_store.dart';
 
 class ProductDetailPage extends StatelessWidget {
@@ -20,6 +23,18 @@ class ProductDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(produto.nome ?? '-- N/A --'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              // Navigate to the CartPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CheckoutPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -56,6 +71,19 @@ class ProductDetailPage extends StatelessWidget {
               Text(
                 'Preço: R\$ ${produto.preco?.toStringAsFixed(2) ?? 'N/A'}',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20), // Add some spacing
+              ElevatedButton(
+                onPressed: () {
+                  // Access the CartStore using Provider
+                  Provider.of<CartStore>(context, listen: false).addToCart(produto);
+
+                  // Show a snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${produto.nome} added to cart!')),
+                  );
+                },
+                child: const Text('Add to Cart'),
               ),
             ],
           ),
