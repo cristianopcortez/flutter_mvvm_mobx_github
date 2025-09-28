@@ -30,7 +30,6 @@ android {
     namespace = "br.com.ccortez.mobx_mvvm"
 //    compileSdk = flutter.compileSdkVersion
     compileSdkVersion 35
-    targetSdkVersion 35
 //    ndkVersion = flutter.ndkVersion
     ndkVersion "25.1.8937393"
 
@@ -71,7 +70,6 @@ android {
 //        targetSdk = flutter.targetSdkVersion
         minSdkVersion 28
         targetSdkVersion 35
-        compileSdkVersion 35
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
         versionCode 10010
