@@ -1,3 +1,6 @@
+# Cursor — local rule with real dart-define secrets (template: .cursor/rules/flutter-run-params.mdc.example)
+.cursor/rules/flutter-run-params.mdc
+
 # Miscellaneous
 *.class
 *.log
