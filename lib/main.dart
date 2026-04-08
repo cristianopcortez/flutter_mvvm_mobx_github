@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,21 +29,22 @@ void main() async {
     // }
   };
 
-  String apiKey = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_API_KEY') ?? ''
-      : '';
-  String appID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_APP_ID') ?? ''
-      : '';
-  String firebaseMessagingSenderID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID') ?? ''
-      : '';
-  String firebaseProjectID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_PROJECT_ID') ?? ''
-      : '';
-  String firebaseProjectStorageBucket = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
-      : '';
+  // Compile-time secrets for CI / obfuscated builds. If unset, use native config
+  // (android/app/google-services.json, ios/Runner/GoogleService-Info.plist) or run:
+  // flutter run --dart-define=FIREBASE_API_KEY=... --dart-define=FIREBASE_APP_ID=...
+  const apiKey = String.fromEnvironment('FIREBASE_API_KEY', defaultValue: '');
+  const appId = String.fromEnvironment('FIREBASE_APP_ID', defaultValue: '');
+  const firebaseMessagingSenderId =
+      String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: '');
+  const firebaseProjectId =
+      String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: '');
+  const firebaseStorageBucket =
+      String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: '');
+
+  final useDartDefineOptions = apiKey.isNotEmpty &&
+      appId.isNotEmpty &&
+      firebaseMessagingSenderId.isNotEmpty &&
+      firebaseProjectId.isNotEmpty;
 
   runZonedGuarded(() async {
     // Ensure Flutter bindings are initialized before anything else
@@ -54,16 +54,20 @@ void main() async {
     debugPrint("Firebase.initializeApp");
     // }
     try {
-      await Firebase.initializeApp(
-        name: appID,
-        options: firebaseOptions(
-          apiKey,
-          firebaseMessagingSenderID,
-          appID,
-          firebaseProjectID,
-          firebaseProjectStorageBucket,
-        ),
-      );
+      if (useDartDefineOptions) {
+        await Firebase.initializeApp(
+          options: firebaseOptions(
+            apiKey,
+            firebaseMessagingSenderId,
+            appId,
+            firebaseProjectId,
+            firebaseStorageBucket,
+          ),
+        );
+      } else {
+        // Default app from platform config (no custom instance name).
+        await Firebase.initializeApp();
+      }
 
       // Firebase initialization succeeded
       logger.d("Firebase initialization completed");
