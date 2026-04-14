@@ -1,4 +1,5 @@
 # Miscellaneous
+.cursor/
 *.class
 *.log
 *.pyc
@@ -29,7 +30,16 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+**/build/
+
+# Android/iOS local and generated files
+**/local.properties
+**/Generated.xcconfig
+**/flutter_export_environment.sh
+**/ephemeral/
+**/GeneratedPluginRegistrant.h
+**/GeneratedPluginRegistrant.m
+**/GeneratedPluginRegistrant.java
 
 # Symbolication related
 app.*.symbols
