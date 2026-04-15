@@ -58,14 +58,6 @@ mixin _$PostViewModel on _PostViewModelBase, Store {
     });
   }
 
-  late final _$getAllPostAsyncAction =
-      AsyncAction('_PostViewModelBase.getAllPost', context: context);
-
-  @override
-  Future<void> getAllPost() {
-    return _$getAllPostAsyncAction.run(() => super.getAllPost());
-  }
-
   late final _$getAllPost2AsyncAction =
       AsyncAction('_PostViewModelBase.getAllPost2', context: context);
 
