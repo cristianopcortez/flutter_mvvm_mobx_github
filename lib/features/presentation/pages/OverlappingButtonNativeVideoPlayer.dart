@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_mvvm_mobx_github/features/view-model/video_player_controller_store.dart';
-import 'package:flutter_mvvm_mobx_github/features/view/PostHomePage.dart';
+import 'package:flutter_mvvm_mobx_github/features/presentation/stores/video_player_controller_store.dart';
+import 'package:flutter_mvvm_mobx_github/features/presentation/pages/PostHomePage.dart';
 import 'package:native_video_view/native_video_view.dart';
 import 'package:provider/provider.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_mvvm_mobx_github/features/view/CheckoutPage.dart';
 import 'package:provider/provider.dart';
-import '../view-model/produto_store.dart';
-import '../view-model/video_player_controller_store.dart';
+import '../stores/produto_store.dart';
+import '../stores/video_player_controller_store.dart';
+import 'CheckoutPage.dart';
 import 'ProductDetailPage.dart';
 
 class ProductHomePage extends StatefulWidget {

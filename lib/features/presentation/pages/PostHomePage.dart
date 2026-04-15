@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import '../view-model/post_view_model.dart';
-import '../view-model/video_player_controller_store.dart';
+import '../stores/post_view_model.dart';
+import '../stores/video_player_controller_store.dart';
 import 'PostDetailScreen.dart';
 
 class PostHomePage extends StatefulWidget {

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../model/produto.dart';
-import 'i_produto_repository.dart';
+import '../../domain/entities/produto.dart';
+import '../../domain/repositories/i_produto_repository.dart';
 
 class ProdutoRepositoryImpl implements IProdutoRepository {
   final FirebaseFirestore _firestore;

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-import '../model/produto.dart';
-import 'i_preference_repository.dart';
+import '../../domain/entities/produto.dart';
+import '../../domain/repositories/i_preference_repository.dart';
 
 class PreferenceRepositoryImpl implements IPreferenceRepository {
   final Dio _dio;

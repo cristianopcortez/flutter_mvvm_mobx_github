@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_mobx_github/features/view/PostHomePage.dart';
+import 'package:flutter_mvvm_mobx_github/features/presentation/pages/PostHomePage.dart';
 import 'package:video_player/video_player.dart';
 
 class OverlappingButtonVideoPlayer extends StatefulWidget {

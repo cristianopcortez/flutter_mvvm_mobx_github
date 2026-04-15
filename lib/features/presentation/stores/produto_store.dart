@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:mobx/mobx.dart';
-import '../model/produto.dart';
-import '../repository/i_produto_repository.dart';
+import '../../domain/entities/produto.dart';
+import '../../domain/repositories/i_produto_repository.dart';
 
 part 'produto_store.g.dart';
 

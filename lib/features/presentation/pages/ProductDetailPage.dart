@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:cached_network_image_builder/cached_network_image_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_mobx_github/features/view/CheckoutPage.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../model/produto.dart';
-import '../view-model/cart_store.dart';
-import '../view-model/produto_store.dart';
+import '../../domain/entities/produto.dart';
+import '../stores/cart_store.dart';
+import '../stores/produto_store.dart';
+import 'CheckoutPage.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Produto produto;

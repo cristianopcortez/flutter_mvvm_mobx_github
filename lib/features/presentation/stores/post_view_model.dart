@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 
-import '../model/post.dart';
-import '../repository/i_post_repository.dart';
+import '../../domain/entities/post.dart';
+import '../../domain/repositories/i_post_repository.dart';
 part 'post_view_model.g.dart';
 
 class PostViewModel = _PostViewModelBase with _$PostViewModel;

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../model/post.dart';
-import 'i_post_repository.dart';
+import '../../domain/entities/post.dart';
+import '../../domain/repositories/i_post_repository.dart';
 
 class PostRepositoryImpl implements IPostRepository {
   final Dio _dio;

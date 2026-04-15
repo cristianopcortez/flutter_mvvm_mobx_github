@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../view-model/cart_store.dart';
-import '../view-model/preference_view_model.dart';
+import '../stores/cart_store.dart';
+import '../stores/preference_view_model.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 

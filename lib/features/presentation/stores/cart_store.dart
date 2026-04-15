@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import '../model/produto.dart';
+import '../../domain/entities/produto.dart';
 
 part 'cart_store.g.dart';
 

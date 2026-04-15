@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
-import 'features/repository/post_repository_impl.dart';
-import 'features/repository/preference_repository_impl.dart';
-import 'features/repository/produto_repository_impl.dart';
-import 'features/view-model/cart_store.dart';
-import 'features/view-model/post_view_model.dart';
-import 'features/view-model/preference_view_model.dart';
-import 'features/view-model/produto_store.dart';
-import 'features/view-model/video_player_controller_store.dart';
-import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
+import 'features/data/repositories/post_repository_impl.dart';
+import 'features/data/repositories/preference_repository_impl.dart';
+import 'features/data/repositories/produto_repository_impl.dart';
+import 'features/presentation/pages/OverlappingButtonNativeVideoPlayer.dart';
+import 'features/presentation/stores/cart_store.dart';
+import 'features/presentation/stores/post_view_model.dart';
+import 'features/presentation/stores/preference_view_model.dart';
+import 'features/presentation/stores/produto_store.dart';
+import 'features/presentation/stores/video_player_controller_store.dart';
 import 'package:logger/logger.dart';
 
 void main() async {

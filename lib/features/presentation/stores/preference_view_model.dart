@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import '../model/produto.dart';
-import '../repository/i_preference_repository.dart';
+import '../../domain/entities/produto.dart';
+import '../../domain/repositories/i_preference_repository.dart';
 
 part 'preference_view_model.g.dart';
 

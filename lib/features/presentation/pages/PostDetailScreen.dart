@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image_builder/cached_network_image_builder.dart';
 import 'package:flutter/material.dart';
 
-import '../model/post.dart';
+import '../../domain/entities/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final Post post;
