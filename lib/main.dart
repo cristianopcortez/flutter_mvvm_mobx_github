@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
+import 'features/repository/post_repository_impl.dart';
+import 'features/repository/preference_repository_impl.dart';
+import 'features/repository/produto_repository_impl.dart';
 import 'features/view-model/cart_store.dart';
 import 'features/view-model/post_view_model.dart';
 import 'features/view-model/preference_view_model.dart';
@@ -87,9 +90,9 @@ void main() async {
           providers: [
             Provider<VideoPlayerControllerStore>(create: (_) => VideoPlayerControllerStore()),
             Provider<CartStore>(create: (_) => CartStore()),
-            Provider<PostViewModel>(create: (_) => PostViewModel()),
-            Provider<PreferenceViewModel>(create: (_) => PreferenceViewModel()),
-            Provider<ProdutoStore>(create: (_) => ProdutoStore()),
+            Provider<PostViewModel>(create: (_) => PostViewModel(PostRepositoryImpl())),
+            Provider<PreferenceViewModel>(create: (_) => PreferenceViewModel(PreferenceRepositoryImpl())),
+            Provider<ProdutoStore>(create: (_) => ProdutoStore(ProdutoRepositoryImpl())),
           ],
           child: const MyApp(),
         ),
