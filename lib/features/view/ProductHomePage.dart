@@ -14,11 +14,12 @@ class ProductHomePage extends StatefulWidget {
 }
 
 class _ProductHomePageState extends State<ProductHomePage> {
-  final ProdutoStore produtoStore = ProdutoStore();
+  late ProdutoStore produtoStore;
 
   @override
   void initState() {
     super.initState();
+    produtoStore = context.read<ProdutoStore>();
     produtoStore.fetchProdutos();
   }
 

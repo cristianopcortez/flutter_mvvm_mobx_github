@@ -17,15 +17,15 @@ class PostHomePage extends StatefulWidget {
 }
 
 class _PostHomePageState extends State<PostHomePage> {
-  final _viewModel = PostViewModel();
+  late PostViewModel _viewModel;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static const double _productFraction = 0.74;
 
   @override
   void initState() {
     super.initState();
-    // _viewModel.getAllPost(); // Call getAllPost() in initState
-    _viewModel.getAllPost2(); // Call getAllPost() in initState
+    _viewModel = context.read<PostViewModel>();
+    _viewModel.getAllPost2();
   }
 
   @override

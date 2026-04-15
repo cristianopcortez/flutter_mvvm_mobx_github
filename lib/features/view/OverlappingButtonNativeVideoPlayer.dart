@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 
 import 'ProductHomePage.dart';
 
-final videoPlayerControllerStore = VideoPlayerControllerStore();
-
 class OverlappingButtonNativeVideoPlayer extends StatefulWidget {
   final String videoPath; // Can be asset or network path
 
@@ -24,14 +22,17 @@ class OverlappingButtonNativeVideoPlayer extends StatefulWidget {
 class _OverlappingButtonNativeVideoPlayerState
     extends State<OverlappingButtonNativeVideoPlayer> {
 
+  late VideoPlayerControllerStore _videoPlayerControllerStore;
+
   @override
   void initState() {
     super.initState();
+    _videoPlayerControllerStore = context.read<VideoPlayerControllerStore>();
   }
 
   @override
   void dispose() {
-    videoPlayerControllerStore.disposeController();
+    _videoPlayerControllerStore.disposeController();
     super.dispose();
   }
 

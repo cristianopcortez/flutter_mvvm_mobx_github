@@ -6,6 +6,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
 import 'features/view-model/cart_store.dart';
+import 'features/view-model/post_view_model.dart';
+import 'features/view-model/preference_view_model.dart';
+import 'features/view-model/produto_store.dart';
 import 'features/view-model/video_player_controller_store.dart';
 import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
 import 'package:logger/logger.dart';
@@ -84,6 +87,9 @@ void main() async {
           providers: [
             Provider<VideoPlayerControllerStore>(create: (_) => VideoPlayerControllerStore()),
             Provider<CartStore>(create: (_) => CartStore()),
+            Provider<PostViewModel>(create: (_) => PostViewModel()),
+            Provider<PreferenceViewModel>(create: (_) => PreferenceViewModel()),
+            Provider<ProdutoStore>(create: (_) => ProdutoStore()),
           ],
           child: const MyApp(),
         ),

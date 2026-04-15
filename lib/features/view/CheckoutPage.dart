@@ -18,13 +18,14 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  final PreferenceViewModel _preferenceViewModel = PreferenceViewModel();
+  late PreferenceViewModel _preferenceViewModel;
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _sub;
 
   @override
   void initState() {
     super.initState();
+    _preferenceViewModel = context.read<PreferenceViewModel>();
     _handleIncomingLinks();
   }
 
