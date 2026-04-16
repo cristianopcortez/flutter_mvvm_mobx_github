@@ -29,7 +29,7 @@ if (flutterVersionName == null) {
 android {
     namespace = "br.com.ccortez.mobx_mvvm"
 //    compileSdk = flutter.compileSdkVersion
-    compileSdkVersion 35
+    compileSdkVersion 36
 //    ndkVersion = flutter.ndkVersion
     ndkVersion "26.1.10909125"
 
@@ -69,7 +69,7 @@ android {
 //        minSdk = flutter.minSdkVersion
 //        targetSdk = flutter.targetSdkVersion
         minSdkVersion 28
-        targetSdkVersion 35
+        targetSdkVersion 36
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
         versionCode 10011
@@ -80,36 +80,12 @@ android {
         }
     }
 
-    task decodeKeystore {
-        def encodedKeystore = System.getenv("KEYSTORE_BASE64")
-        try {
-//            def decodedKeystoreBytes = Base64.decodeBase64(encodedKeystore)
-            def decodedKeystoreBytes = Base64.getDecoder().decode(encodedKeystore.toString())
-            // Save the decoded keystore bytes to a temporary file
-            def tempFile = File.createTempFile("decoded_keystore", ".jks")
-            //        tempFile.writeBytes(decodedKeystoreBytes)
-            FileUtils.writeByteArrayToFile(tempFile, decodedKeystoreBytes);
-
-            // Use the temporary file with storeFile
-            signingConfigs {
-                release {
-                    if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
-                        storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
-                        storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
-                        keyAlias System.getenv()["CM_KEY_ALIAS"]
-                        keyPassword System.getenv()["CM_KEY_PASSWORD"]
-                    } else {
-                        storeFile file(tempFile.absolutePath)
-
-                        // ... other signing configuration details
-                        storePassword System.getenv("KEYSTORE_PASSWORD")
-                        keyAlias System.getenv("KEY_ALIAS")
-                        keyPassword System.getenv("KEY_PASSWORD")
-                    }
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            println "Invalid base64 encoding: ${e.message}"
+    signingConfigs {
+        release {
+            storeFile file("${rootProject.projectDir}/../keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
 
@@ -205,4 +181,3 @@ flutter {
     source = "../.."
 }
 
-import org.apache.commons.io.FileUtils
