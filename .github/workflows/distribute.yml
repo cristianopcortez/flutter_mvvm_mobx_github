@@ -24,8 +24,8 @@ jobs:
       #echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks
       - name: Generate local.properties
         run: |
-          echo "flutter.versionCode=10011" >> local.properties
-          echo "flutter.versionName=1.0.011" >> local.properties
+          echo "flutter.versionCode=10012" >> local.properties
+          echo "flutter.versionName=1.0.012" >> local.properties
       #          echo "flutter.versionCode=$(git rev-parse --short HEAD)" >> local.properties
       #          echo "flutter.versionName=1.0.$(git rev-parse --short HEAD)" >> local.properties
       - name: Print root properties file

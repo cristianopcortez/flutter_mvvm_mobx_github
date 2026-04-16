@@ -72,8 +72,8 @@ android {
         targetSdkVersion 36
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
-        versionCode 10011
-        versionName "1.0.011"
+        versionCode 10012
+        versionName "1.0.012"
 
         ndk {
             debugSymbolLevel 'FULL' // Inclui símbolos de depuração completos.
