@@ -1,14 +1,19 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
-import 'features/view-model/cart_store.dart';
-import 'features/view-model/video_player_controller_store.dart';
-import 'features/view/OverlappingButtonNativeVideoPlayer.dart';
+import 'features/data/repositories/post_repository_impl.dart';
+import 'features/data/repositories/preference_repository_impl.dart';
+import 'features/data/repositories/produto_repository_impl.dart';
+import 'features/presentation/pages/OverlappingButtonNativeVideoPlayer.dart';
+import 'features/presentation/stores/cart_store.dart';
+import 'features/presentation/stores/post_view_model.dart';
+import 'features/presentation/stores/preference_view_model.dart';
+import 'features/presentation/stores/produto_store.dart';
+import 'features/presentation/stores/video_player_controller_store.dart';
 import 'package:logger/logger.dart';
 
 void main() async {
@@ -30,21 +35,22 @@ void main() async {
     // }
   };
 
-  String apiKey = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_API_KEY') ?? ''
-      : '';
-  String appID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_APP_ID') ?? ''
-      : '';
-  String firebaseMessagingSenderID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID') ?? ''
-      : '';
-  String firebaseProjectID = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_PROJECT_ID') ?? ''
-      : '';
-  String firebaseProjectStorageBucket = Platform.isAndroid
-      ? const String.fromEnvironment('FIREBASE_STORAGE_BUCKET') ?? ''
-      : '';
+  // Compile-time secrets for CI / obfuscated builds. If unset, use native config
+  // (android/app/google-services.json, ios/Runner/GoogleService-Info.plist) or run:
+  // flutter run --dart-define=FIREBASE_API_KEY=... --dart-define=FIREBASE_APP_ID=...
+  const apiKey = String.fromEnvironment('FIREBASE_API_KEY', defaultValue: '');
+  const appId = String.fromEnvironment('FIREBASE_APP_ID', defaultValue: '');
+  const firebaseMessagingSenderId =
+      String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: '');
+  const firebaseProjectId =
+      String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: '');
+  const firebaseStorageBucket =
+      String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: '');
+
+  final useDartDefineOptions = apiKey.isNotEmpty &&
+      appId.isNotEmpty &&
+      firebaseMessagingSenderId.isNotEmpty &&
+      firebaseProjectId.isNotEmpty;
 
   runZonedGuarded(() async {
     // Ensure Flutter bindings are initialized before anything else
@@ -54,16 +60,20 @@ void main() async {
     debugPrint("Firebase.initializeApp");
     // }
     try {
-      await Firebase.initializeApp(
-        name: appID,
-        options: firebaseOptions(
-          apiKey,
-          firebaseMessagingSenderID,
-          appID,
-          firebaseProjectID,
-          firebaseProjectStorageBucket,
-        ),
-      );
+      if (useDartDefineOptions) {
+        await Firebase.initializeApp(
+          options: firebaseOptions(
+            apiKey,
+            firebaseMessagingSenderId,
+            appId,
+            firebaseProjectId,
+            firebaseStorageBucket,
+          ),
+        );
+      } else {
+        // Default app from platform config (no custom instance name).
+        await Firebase.initializeApp();
+      }
 
       // Firebase initialization succeeded
       logger.d("Firebase initialization completed");
@@ -80,6 +90,9 @@ void main() async {
           providers: [
             Provider<VideoPlayerControllerStore>(create: (_) => VideoPlayerControllerStore()),
             Provider<CartStore>(create: (_) => CartStore()),
+            Provider<PostViewModel>(create: (_) => PostViewModel(PostRepositoryImpl())),
+            Provider<PreferenceViewModel>(create: (_) => PreferenceViewModel(PreferenceRepositoryImpl())),
+            Provider<ProdutoStore>(create: (_) => ProdutoStore(ProdutoRepositoryImpl())),
           ],
           child: const MyApp(),
         ),

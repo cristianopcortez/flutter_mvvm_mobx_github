@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create google-services.json file
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
@@ -24,8 +24,8 @@ jobs:
       #echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > /home/runner/work/flutter_mvvm_mobx_github/flutter_mvvm_mobx_github/keystore.jks
       - name: Generate local.properties
         run: |
-          echo "flutter.versionCode=10000" >> local.properties
-          echo "flutter.versionName=1.0.0-internal" >> local.properties
+          echo "flutter.versionCode=10011" >> local.properties
+          echo "flutter.versionName=1.0.011" >> local.properties
       #          echo "flutter.versionCode=$(git rev-parse --short HEAD)" >> local.properties
       #          echo "flutter.versionName=1.0.$(git rev-parse --short HEAD)" >> local.properties
       - name: Print root properties file
@@ -81,7 +81,7 @@ jobs:
       #  run: echo "GOOGLE_SERVICES_JSON_FILE=${{ secrets.GOOGLE_SERVICES_JSON_PATH }}" >> $GITHUB_ENV
 
       # Disable cache for Dart SDK (optional)
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             !**/flutter/
@@ -90,7 +90,7 @@ jobs:
             ${{ runner.os }}-flutter-
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin' # or 'zulu', 'adopt', etc.
           java-version: '17'
@@ -228,13 +228,22 @@ jobs:
           path: ./app-signed.aab
 
 #      - name: Upload Profile AAB
-#        uses: actions/upload-artifact@v3
+#        uses: actions/upload-artifact@v4
 #        with:
 #          name: profile-aab
 #          path: build/app/outputs/bundle/profile/app-profile.aab
 
       - name: Upload Release AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Publish to Google Play Internal Track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: br.com.ccortez.mobx_mvvm
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed

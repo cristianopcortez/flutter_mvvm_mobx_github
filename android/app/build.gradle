@@ -31,7 +31,7 @@ android {
 //    compileSdk = flutter.compileSdkVersion
     compileSdkVersion 35
 //    ndkVersion = flutter.ndkVersion
-    ndkVersion "25.1.8937393"
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -73,7 +73,7 @@ android {
 //        versionCode = flutterVersionCode.toInteger()
 //        versionName = flutterVersionName
         versionCode 10011
-        versionName "1.0.011-internal"
+        versionName "1.0.011"
 
         ndk {
             debugSymbolLevel 'FULL' // Inclui símbolos de depuração completos.
