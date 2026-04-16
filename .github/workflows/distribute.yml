@@ -122,9 +122,12 @@ jobs:
       - name: Print merged/destiny android properties file
         run: cat ./android/local.properties
 
+      - name: Analyze Dart code
+        run: flutter analyze --no-fatal-infos
+
       # ... other build steps
       - name: Build debug AAB
-        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
+        run: flutter build appbundle --release --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
 #        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
         #run: flutter build appbundle --profile --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
         #run: flutter build appbundle --release --verbose
