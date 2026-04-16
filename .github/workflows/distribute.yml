@@ -110,15 +110,6 @@ jobs:
       - name: List files android folder
         run: ls -la ./android
 
-      - name: List files merge_properties folder
-        run: ls -la ./.github/actions/merge_properties
-
-      - name: Chmod main.sh to executable
-        run: chmod +x ./.github/actions/merge_properties/main.sh
-
-      - name: List files merge_properties folder
-        run: ls -la ./.github/actions/merge_properties
-
       - name: Merge properties with custom action
         uses: ./.github/actions/merge_properties
         with:
