@@ -67,8 +67,9 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 # video_player_android <2.9 passes -Werror to javac with Java 8; JDK 21+ treats that as a hard error.
+# Pinned to 2.9.1 exactly: 2.9.5+ uses Dart language 3.9 which requires Flutter 3.32+.
 dependency_overrides:
-  video_player_android: ^2.9.1
+  video_player_android: 2.9.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
