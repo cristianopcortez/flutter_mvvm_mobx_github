@@ -9,8 +9,10 @@ part of 'video_player_controller_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
-  late final _$controllerAtom =
-      Atom(name: '_VideoPlayerControllerStore.controller', context: context);
+  late final _$controllerAtom = Atom(
+    name: '_VideoPlayerControllerStore.controller',
+    context: context,
+  );
 
   @override
   VideoViewController? get controller {
@@ -25,8 +27,10 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
     });
   }
 
-  late final _$isInitializedAtom =
-      Atom(name: '_VideoPlayerControllerStore.isInitialized', context: context);
+  late final _$isInitializedAtom = Atom(
+    name: '_VideoPlayerControllerStore.isInitialized',
+    context: context,
+  );
 
   @override
   bool get isInitialized {
@@ -41,8 +45,10 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
     });
   }
 
-  late final _$fileNameAtom =
-      Atom(name: '_VideoPlayerControllerStore.fileName', context: context);
+  late final _$fileNameAtom = Atom(
+    name: '_VideoPlayerControllerStore.fileName',
+    context: context,
+  );
 
   @override
   String get fileName {
@@ -57,8 +63,10 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
     });
   }
 
-  late final _$reloadFlagAtom =
-      Atom(name: '_VideoPlayerControllerStore.reloadFlag', context: context);
+  late final _$reloadFlagAtom = Atom(
+    name: '_VideoPlayerControllerStore.reloadFlag',
+    context: context,
+  );
 
   @override
   bool get reloadFlag {
@@ -74,33 +82,41 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
   }
 
   late final _$initializeControllerAsyncAction = AsyncAction(
-      '_VideoPlayerControllerStore.initializeController',
-      context: context);
+    '_VideoPlayerControllerStore.initializeController',
+    context: context,
+  );
 
   @override
   Future<void> initializeController(VideoViewController newController) {
-    return _$initializeControllerAsyncAction
-        .run(() => super.initializeController(newController));
+    return _$initializeControllerAsyncAction.run(
+      () => super.initializeController(newController),
+    );
   }
 
-  late final _$resetAndPlayAsyncAction =
-      AsyncAction('_VideoPlayerControllerStore.resetAndPlay', context: context);
+  late final _$resetAndPlayAsyncAction = AsyncAction(
+    '_VideoPlayerControllerStore.resetAndPlay',
+    context: context,
+  );
 
   @override
   Future<void> resetAndPlay() {
     return _$resetAndPlayAsyncAction.run(() => super.resetAndPlay());
   }
 
-  late final _$reloadPlayerAsyncAction =
-      AsyncAction('_VideoPlayerControllerStore.reloadPlayer', context: context);
+  late final _$reloadPlayerAsyncAction = AsyncAction(
+    '_VideoPlayerControllerStore.reloadPlayer',
+    context: context,
+  );
 
   @override
   Future<void> reloadPlayer() {
     return _$reloadPlayerAsyncAction.run(() => super.reloadPlayer());
   }
 
-  late final _$_VideoPlayerControllerStoreActionController =
-      ActionController(name: '_VideoPlayerControllerStore', context: context);
+  late final _$_VideoPlayerControllerStoreActionController = ActionController(
+    name: '_VideoPlayerControllerStore',
+    context: context,
+  );
 
   @override
   void play() {
@@ -148,9 +164,10 @@ mixin _$VideoPlayerControllerStore on _VideoPlayerControllerStore, Store {
 
   @override
   void ensureControllerInitialized() {
-    final _$actionInfo =
-        _$_VideoPlayerControllerStoreActionController.startAction(
-            name: '_VideoPlayerControllerStore.ensureControllerInitialized');
+    final _$actionInfo = _$_VideoPlayerControllerStoreActionController
+        .startAction(
+          name: '_VideoPlayerControllerStore.ensureControllerInitialized',
+        );
     try {
       return super.ensureControllerInitialized();
     } finally {

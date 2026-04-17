@@ -9,8 +9,10 @@ part of 'post_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PostViewModel on _PostViewModelBase, Store {
-  late final _$postsAtom =
-      Atom(name: '_PostViewModelBase.posts', context: context);
+  late final _$postsAtom = Atom(
+    name: '_PostViewModelBase.posts',
+    context: context,
+  );
 
   @override
   List<Post> get posts {
@@ -26,7 +28,9 @@ mixin _$PostViewModel on _PostViewModelBase, Store {
   }
 
   late final _$isServiceRequestLoadingAtom = Atom(
-      name: '_PostViewModelBase.isServiceRequestLoading', context: context);
+    name: '_PostViewModelBase.isServiceRequestLoading',
+    context: context,
+  );
 
   @override
   bool get isServiceRequestLoading {
@@ -36,14 +40,19 @@ mixin _$PostViewModel on _PostViewModelBase, Store {
 
   @override
   set isServiceRequestLoading(bool value) {
-    _$isServiceRequestLoadingAtom
-        .reportWrite(value, super.isServiceRequestLoading, () {
-      super.isServiceRequestLoading = value;
-    });
+    _$isServiceRequestLoadingAtom.reportWrite(
+      value,
+      super.isServiceRequestLoading,
+      () {
+        super.isServiceRequestLoading = value;
+      },
+    );
   }
 
-  late final _$pageStateAtom =
-      Atom(name: '_PostViewModelBase.pageState', context: context);
+  late final _$pageStateAtom = Atom(
+    name: '_PostViewModelBase.pageState',
+    context: context,
+  );
 
   @override
   PageState get pageState {
@@ -58,21 +67,26 @@ mixin _$PostViewModel on _PostViewModelBase, Store {
     });
   }
 
-  late final _$getAllPost2AsyncAction =
-      AsyncAction('_PostViewModelBase.getAllPost2', context: context);
+  late final _$getAllPost2AsyncAction = AsyncAction(
+    '_PostViewModelBase.getAllPost2',
+    context: context,
+  );
 
   @override
   Future<void> getAllPost2() {
     return _$getAllPost2AsyncAction.run(() => super.getAllPost2());
   }
 
-  late final _$_PostViewModelBaseActionController =
-      ActionController(name: '_PostViewModelBase', context: context);
+  late final _$_PostViewModelBaseActionController = ActionController(
+    name: '_PostViewModelBase',
+    context: context,
+  );
 
   @override
   void changeRequest() {
     final _$actionInfo = _$_PostViewModelBaseActionController.startAction(
-        name: '_PostViewModelBase.changeRequest');
+      name: '_PostViewModelBase.changeRequest',
+    );
     try {
       return super.changeRequest();
     } finally {

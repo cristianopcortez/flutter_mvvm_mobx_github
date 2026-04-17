@@ -9,8 +9,10 @@ part of 'produto_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProdutoStore on _ProdutoStore, Store {
-  late final _$isLoadingAtom =
-      Atom(name: '_ProdutoStore.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_ProdutoStore.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -25,8 +27,10 @@ mixin _$ProdutoStore on _ProdutoStore, Store {
     });
   }
 
-  late final _$hasErrorAtom =
-      Atom(name: '_ProdutoStore.hasError', context: context);
+  late final _$hasErrorAtom = Atom(
+    name: '_ProdutoStore.hasError',
+    context: context,
+  );
 
   @override
   bool get hasError {
@@ -41,8 +45,10 @@ mixin _$ProdutoStore on _ProdutoStore, Store {
     });
   }
 
-  late final _$produtosAtom =
-      Atom(name: '_ProdutoStore.produtos', context: context);
+  late final _$produtosAtom = Atom(
+    name: '_ProdutoStore.produtos',
+    context: context,
+  );
 
   @override
   ObservableList<Produto> get produtos {
@@ -57,8 +63,10 @@ mixin _$ProdutoStore on _ProdutoStore, Store {
     });
   }
 
-  late final _$fetchProdutosAsyncAction =
-      AsyncAction('_ProdutoStore.fetchProdutos', context: context);
+  late final _$fetchProdutosAsyncAction = AsyncAction(
+    '_ProdutoStore.fetchProdutos',
+    context: context,
+  );
 
   @override
   Future<void> fetchProdutos() {
