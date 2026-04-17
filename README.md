@@ -1,51 +1,121 @@
-# Flutter GitHub Explorer - MVVM & MobX Implementation
+# Flutter Kiosk App — MVVM + MobX + Firebase
 
-This repository demonstrates a robust implementation of a Flutter application utilizing the **MVVM (Model-View-ViewModel)** architectural pattern and **MobX** for reactive state management.
+Aplicativo Flutter originalmente desenvolvido para rodar em **totens de autoatendimento**, com fluxo completo de vitrine de produtos, carrinho e checkout via Mercado Pago. O projeto não foi a frente como produto, mas está sendo mantido como **portfólio técnico** por demonstrar uma stack sólida e padrões de arquitetura aplicados em um contexto real.
 
-The project serves as a technical showcase of how to build scalable, maintainable, and testable cross-platform applications while consuming real-world data from the GitHub API.
+---
 
-## 🏗 Architecture & Design Patterns
+## Contexto
 
-To ensure a high level of code quality and separation of concerns, the project follows these principles:
+A ideia inicial era um totem físico onde o cliente visualizava um vídeo promocional em loop, navegava pelo catálogo de produtos e finalizava a compra pelo Mercado Pago — tudo sem intervenção de atendente. A tela inicial reflete isso: um player de vídeo nativo em fullscreen com botões sobrepostos para acessar o catálogo ou os posts.
 
-- **MVVM Pattern:** Strict decoupling of the UI (View) from the business logic (ViewModel) and data sources (Model).
+---
 
-- **Reactive State Management:** Utilizing MobX with Observables, Actions, and Computed values to create a seamless, reactive user experience with minimal boilerplate.
+## Arquitetura
 
-- **Dependency Injection:** Ensuring modularity and easier testing by decoupling object creation from usage.
+O projeto segue **Clean Architecture** com separação em três camadas:
 
-- **Service Layer:** Dedicated services for API communication, abstracting the networking logic (Dio/Http) from the rest of the application.
+```
+lib/
+├── features/
+│   ├── data/          # Implementações dos repositórios (Firebase, API)
+│   ├── domain/        # Entidades e interfaces dos repositórios
+│   └── presentation/  # Stores (MobX) e Pages (UI)
+```
 
-## 🚀 Key Features
+- **MVVM:** UI (View) desacoplada da lógica de negócio (ViewModel/Store)
+- **MobX:** estado reativo com `@observable`, `@action` e `@computed`
+- **Provider:** injeção de dependência e distribuição das stores pela árvore de widgets
+- **Interfaces no domínio:** `IPostRepository`, `IProdutoRepository`, `IPreferenceRepository` — facilitam mock e testabilidade
 
-- **GitHub Repository Search:** Real-time fetching of repositories using the GitHub REST API.
+---
 
-- **Reactive UI:** Instant UI updates based on state changes without manual `setState` calls.
+## Funcionalidades
 
-- **Error Handling:** Robust management of API states (Loading, Success, and Error) to provide a smooth UX.
+- **Player de vídeo nativo** em fullscreen como tela inicial (totem-style), com package local `native_video_view` adaptado para remover embedding v1 e corrigir `LifecycleOwner` para AndroidX
+- **Catálogo de produtos** carregado do Firestore com estados de loading/erro via MobX
+- **Carrinho de compras** reativo com cálculo de total via `@computed`
+- **Checkout com Mercado Pago** — cria preferência de pagamento via backend e abre o fluxo em Custom Tabs
+- **Deep links** (`app_links`) para capturar retorno do Mercado Pago (`/success`, `/pending`, `/failure`)
+- **Posts** consumidos de API REST com controle de estado (LOADING / SUCCESS / ERROR)
+- **Firebase Crashlytics** para monitoramento de erros em produção
+- **Firebase Storage** para assets remotos
 
-- **Clean Code:** Written with a focus on readability, maintainability, and SOLID principles.
+---
 
-## 🛠 Tech Stack
+## Tech Stack
 
-| Category        | Technology                          |
-| --------------- | ----------------------------------- |
-| Language        | Dart                                |
-| Framework       | Flutter                             |
-| State Management| MobX & Flutter MobX                 |
-| Networking      | Dio (or Http) for RESTful API integration |
-| Architecture    | MVVM                                |
+| Categoria         | Tecnologia                              |
+|-------------------|-----------------------------------------|
+| Linguagem         | Dart                                    |
+| Framework         | Flutter                                 |
+| Arquitetura       | MVVM + Clean Architecture               |
+| State Management  | MobX + Flutter MobX                     |
+| DI                | Provider                                |
+| Backend / DB      | Firebase Firestore + Storage            |
+| Monitoramento     | Firebase Crashlytics                    |
+| Pagamentos        | Mercado Pago (via backend de preferência) |
+| Networking        | Dio                                     |
+| Deep Links        | app_links                               |
+| Player de Vídeo   | native_video_view (package local)       |
+| Testes            | flutter_test + mockito                  |
+| CI/CD             | GitHub Actions → Google Play (internal track) |
 
-## 🧪 Why MobX?
+---
 
-The choice of MobX reflects a preference for **transparent functional reactive programming**. By using transparent tracking, the application ensures that only the components that truly depend on a specific piece of state are re-rendered, optimizing performance on both Android and iOS devices.
+## Testes
 
-## ⚙️ Configuração local (após clonar)
+O projeto conta com testes unitários das stores, cobrindo lógica de negócio isolada da UI:
 
-1. **Dependências:** `flutter pub get`
-2. **Código gerado (MobX):** `dart run build_runner build --delete-conflicting-outputs`
-3. **Firebase:** obtenha os arquivos do console Firebase e coloque-os onde o projeto espera (ex.: `android/app/google-services.json`). Os caminhos sensíveis costumam estar no `.gitignore` — não versionar.
-4. **`dart-define`:** o app espera variáveis de ambiente em tempo de compilação (Firebase + Mercado Pago + URL do backend de preferências). Use os **mesmos nomes** listados em `.cursor/rules/flutter-run-params.mdc.example` e preencha com os valores do seu ambiente.
-5. **Cursor (opcional):** copie `.cursor/rules/flutter-run-params.mdc.example` para `.cursor/rules/flutter-run-params.mdc`, substitua os placeholders e **não commite** esse arquivo se contiver tokens ou chaves reais.
+```
+test/
+└── stores/
+    ├── cart_store_test.dart          # 8 testes — lógica do carrinho e totalPrice
+    ├── post_view_model_test.dart     # 6 testes — fluxo de estados com mock do repositório
+    └── produto_store_test.dart       # 5 testes — fetch de produtos e tratamento de erro
+```
 
-**Rodar (exemplo):** acrescente ao `flutter run` / `flutter build` os parâmetros `--dart-define=...` conforme o template; ajuste `MP_CREATE_PREFERENCE_HOST` para a URL do seu backend em rede local ou homologação.
+Para rodar:
+```bash
+flutter test
+```
+
+---
+
+## CI/CD
+
+O workflow em `.github/workflows/distribute.yml` é disparado a cada push na `master` e executa:
+
+1. Geração de `google-services.json` a partir de secret (Base64)
+2. Decodificação do keystore de assinatura
+3. `flutter analyze` no código
+4. Build do `.aab` release com credenciais via `--dart-define`
+5. Assinatura com `jarsigner`
+6. Upload do artefato e publicação na **internal track** do Google Play
+
+---
+
+## Configuração local
+
+1. **Dependências:**
+   ```bash
+   flutter pub get
+   ```
+
+2. **Código gerado (MobX + mocks):**
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+
+3. **Firebase:** obtenha os arquivos do console Firebase e coloque-os nos caminhos esperados:
+   - `android/app/google-services.json`
+   - `ios/Runner/GoogleService-Info.plist`
+
+4. **Variáveis de ambiente (`--dart-define`):** o app espera as variáveis listadas em `.cursor/rules/flutter-run-params.mdc.example`. Copie o arquivo, preencha com os valores do seu ambiente e **não commite** o arquivo final se contiver chaves reais.
+
+5. **Rodar:**
+   ```bash
+   flutter run \
+     --dart-define=FIREBASE_API_KEY=... \
+     --dart-define=FIREBASE_APP_ID=... \
+     --dart-define=MP_CREATE_PREFERENCE_HOST=http://seu-backend/...
+   ```
