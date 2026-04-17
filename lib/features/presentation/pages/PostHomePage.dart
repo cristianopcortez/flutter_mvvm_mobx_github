@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image_builder/cached_network_image_builder.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ class PostHomePage extends StatefulWidget {
 
 class _PostHomePageState extends State<PostHomePage> {
   late PostViewModel _viewModel;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static const double _productFraction = 0.74;
 
   @override

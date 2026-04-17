@@ -12,13 +12,15 @@ mixin _$CartStore on _CartStore, Store {
   Computed<double>? _$totalPriceComputed;
 
   @override
-  double get totalPrice =>
-      (_$totalPriceComputed ??= Computed<double>(() => super.totalPrice,
-              name: '_CartStore.totalPrice'))
-          .value;
+  double get totalPrice => (_$totalPriceComputed ??= Computed<double>(
+    () => super.totalPrice,
+    name: '_CartStore.totalPrice',
+  )).value;
 
-  late final _$cartItemsAtom =
-      Atom(name: '_CartStore.cartItems', context: context);
+  late final _$cartItemsAtom = Atom(
+    name: '_CartStore.cartItems',
+    context: context,
+  );
 
   @override
   ObservableList<Produto> get cartItems {
@@ -33,13 +35,16 @@ mixin _$CartStore on _CartStore, Store {
     });
   }
 
-  late final _$_CartStoreActionController =
-      ActionController(name: '_CartStore', context: context);
+  late final _$_CartStoreActionController = ActionController(
+    name: '_CartStore',
+    context: context,
+  );
 
   @override
   void addToCart(Produto produto) {
-    final _$actionInfo =
-        _$_CartStoreActionController.startAction(name: '_CartStore.addToCart');
+    final _$actionInfo = _$_CartStoreActionController.startAction(
+      name: '_CartStore.addToCart',
+    );
     try {
       return super.addToCart(produto);
     } finally {
@@ -50,7 +55,8 @@ mixin _$CartStore on _CartStore, Store {
   @override
   void removeFromCart(Produto produto) {
     final _$actionInfo = _$_CartStoreActionController.startAction(
-        name: '_CartStore.removeFromCart');
+      name: '_CartStore.removeFromCart',
+    );
     try {
       return super.removeFromCart(produto);
     } finally {
