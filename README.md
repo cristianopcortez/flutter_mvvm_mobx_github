@@ -81,6 +81,19 @@ flutter test
 
 ---
 
+## 🚀 Project Showcase & Automated Tests
+
+Além dos testes unitários, o projeto inclui **testes instrumentados** que exercitam as principais jornadas do usuário em um ambiente próximo ao de produção. Eles ajudam a manter a estabilidade do fluxo (navegação, carrinho, integrações) quando o código ou dependências mudam.
+
+Demonstrações em vídeo (Loom):
+
+| Tipo | Assista |
+|------|---------|
+| **Showcase do projeto** — visão geral do app e da experiência | [![Loom — Showcase](https://img.shields.io/badge/Loom-showcase-625DF5?logo=loom&logoColor=white)](https://www.loom.com/share/08fcddebf2a9411ea21dd177f6f6ac5c) |
+| **Testes de integração** — execução em dispositivo físico | [![Loom — Integração](https://img.shields.io/badge/Loom-integration%20test%20%28device%29-625DF5?logo=loom&logoColor=white)](https://www.loom.com/share/5761cbb9d80643d1a723898c603f39d4) |
+
+---
+
 ## CI/CD
 
 O workflow em `.github/workflows/distribute.yml` é disparado a cada push na `master` e executa:
