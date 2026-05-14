@@ -85,12 +85,30 @@ flutter test
 
 Além dos testes unitários, o projeto inclui **testes instrumentados** que exercitam as principais jornadas do usuário em um ambiente próximo ao de produção. Eles ajudam a manter a estabilidade do fluxo (navegação, carrinho, integrações) quando o código ou dependências mudam.
 
-Demonstrações em vídeo (Loom):
+Pré-visualizações abaixo usam o **thumbnail oficial do Loom** (GIF); **clique na imagem** para abrir o vídeo no player.
 
-| Tipo | Assista |
-|------|---------|
-| **Showcase do projeto** — visão geral do app e da experiência | [![Loom — Showcase](https://img.shields.io/badge/Loom-showcase-625DF5?logo=loom&logoColor=white)](https://www.loom.com/share/08fcddebf2a9411ea21dd177f6f6ac5c) |
-| **Testes de integração** — execução em dispositivo físico | [![Loom — Integração](https://img.shields.io/badge/Loom-integration%20test%20%28device%29-625DF5?logo=loom&logoColor=white)](https://www.loom.com/share/5761cbb9d80643d1a723898c603f39d4) |
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <strong>Showcase do projeto</strong><br/>
+      <sub>Visão geral do app e da experiência · ▶ assistir no Loom</sub><br/><br/>
+      <a href="https://www.loom.com/share/08fcddebf2a9411ea21dd177f6f6ac5c" title="Abrir vídeo no Loom">
+        <img src="https://cdn.loom.com/sessions/thumbnails/08fcddebf2a9411ea21dd177f6f6ac5c-7c25f457a8b325e5.gif" alt="Vídeo: showcase do projeto (clique para abrir no Loom)" width="420" />
+      </a>
+      <br/>
+      <a href="https://www.loom.com/share/08fcddebf2a9411ea21dd177f6f6ac5c">Abrir link direto →</a>
+    </td>
+    <td align="center" width="50%">
+      <strong>Testes de integração</strong><br/>
+      <sub>Execução em dispositivo físico · ▶ assistir no Loom</sub><br/><br/>
+      <a href="https://www.loom.com/share/5761cbb9d80643d1a723898c603f39d4" title="Abrir vídeo no Loom">
+        <img src="https://cdn.loom.com/sessions/thumbnails/5761cbb9d80643d1a723898c603f39d4-f1477d4ff142e303.gif" alt="Vídeo: testes de integração em device (clique para abrir no Loom)" width="420" />
+      </a>
+      <br/>
+      <a href="https://www.loom.com/share/5761cbb9d80643d1a723898c603f39d4">Abrir link direto →</a>
+    </td>
+  </tr>
+</table>
 
 ---
 
