@@ -94,7 +94,7 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: flutter pub upgrade
+        run: flutter pub get
 
       - name: Check Flutter version
         run: flutter --version
