@@ -1,5 +1,8 @@
 # Flutter Kiosk App — MVVM + MobX + Firebase
 
+[![CI](https://github.com/cristianopcortez/flutter_mvvm_mobx_github/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/cristianopcortez/flutter_mvvm_mobx_github/actions/workflows/ci.yml)
+[![Distribute](https://github.com/cristianopcortez/flutter_mvvm_mobx_github/actions/workflows/distribute.yml/badge.svg?branch=master)](https://github.com/cristianopcortez/flutter_mvvm_mobx_github/actions/workflows/distribute.yml)
+
 Aplicativo Flutter originalmente desenvolvido para rodar em **totens de autoatendimento**, com fluxo completo de vitrine de produtos, carrinho e checkout via Mercado Pago. O projeto não foi a frente como produto, mas está sendo mantido como **portfólio técnico** por demonstrar uma stack sólida e padrões de arquitetura aplicados em um contexto real.
 
 ---
@@ -114,7 +117,19 @@ Pré-visualizações abaixo usam o **thumbnail oficial do Loom** (GIF); **clique
 
 ## CI/CD
 
-O workflow em `.github/workflows/distribute.yml` é disparado a cada push na `master` e executa:
+O projeto tem duas esteiras separadas no GitHub Actions, cada uma com seu badge:
+
+### CI — qualidade (`.github/workflows/ci.yml`)
+
+Disparada em push/PR na `master`. Organizada em jobs, um por estratégia de teste:
+
+- **A · Analyze + Unit Tests** — `flutter analyze` + testes unitários (`flutter test test/`). É o job **obrigatório**, que define a cor do badge **CI**.
+- **B · Integration (Android emulator)** — testes instrumentados (`flutter test integration_test`) em emulador Android. Roda com `continue-on-error` enquanto estabiliza, então **não derruba** o badge.
+- **C · Firebase Test Lab** (`.github/workflows/test-lab.yml`) — mesmos testes instrumentados na nuvem. Disparo **manual** (`workflow_dispatch`) e protegido por secrets (`GCP_SA_KEY`, `GCP_PROJECT_ID`); fica montado mas inativo até as credenciais GCP serem configuradas.
+
+### Distribute — release (`.github/workflows/distribute.yml`)
+
+Disparada a cada push na `master`:
 
 1. Geração de `google-services.json` a partir de secret (Base64)
 2. Decodificação do keystore de assinatura

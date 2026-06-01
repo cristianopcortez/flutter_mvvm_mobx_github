@@ -44,6 +44,7 @@ migrate_working_dir/
 **/GeneratedPluginRegistrant.h
 **/GeneratedPluginRegistrant.m
 **/GeneratedPluginRegistrant.java
+**/GeneratedPluginRegistrant.swift
 
 # Symbolication related
 app.*.symbols

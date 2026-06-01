@@ -1,0 +1,110 @@
+name: Firebase Test Lab
+
+# ---------------------------------------------------------------------------
+# Opção C — Testes instrumentados (integration_test) no Firebase Test Lab.
+#
+# Disparo APENAS manual (workflow_dispatch): assim este workflow NUNCA roda
+# sozinho em push/PR e, portanto, não afeta o badge "CI".
+#
+# Pré-requisitos (ainda NÃO configurados neste repo):
+#   - Projeto GCP com billing e a API do Firebase Test Lab ativada.
+#   - Service account com papel de Test Lab + secret GCP_SA_KEY (JSON).
+#   - Secret/variável GCP_PROJECT_ID (id do projeto Firebase).
+# Enquanto os secrets não existirem, o job sai com aviso (continue-on-error)
+# em vez de falhar de forma barulhenta.
+# ---------------------------------------------------------------------------
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_target:
+        description: 'Arquivo de integration_test a executar no Test Lab'
+        required: true
+        default: 'integration_test/cart_flow_test.dart'
+      device_model:
+        description: 'Modelo do device (gcloud firebase test android models list)'
+        required: true
+        default: 'MediumPhone.arm'
+      android_api:
+        description: 'Nível de API Android'
+        required: true
+        default: '34'
+
+env:
+  FLUTTER_VERSION: '3.35.4'
+
+jobs:
+  firebase_test_lab:
+    name: C · Firebase Test Lab
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Test Lab secrets
+        id: guard
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          if [[ -z "$GCP_SA_KEY" || -z "$GCP_PROJECT_ID" ]]; then
+            echo "::warning::GCP_SA_KEY/GCP_PROJECT_ID não configurados. Pulando execução no Test Lab."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up JDK
+        if: steps.guard.outputs.ready == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        if: steps.guard.outputs.ready == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        if: steps.guard.outputs.ready == 'true'
+        run: flutter pub get
+
+      - name: Generate code (MobX + mocks)
+        if: steps.guard.outputs.ready == 'true'
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build debug + instrumentation APKs
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          flutter build apk --debug
+          pushd android
+          ./gradlew app:assembleDebug -Ptarget="${{ github.workspace }}/${{ inputs.test_target }}"
+          ./gradlew app:assembleDebugAndroidTest -Ptarget="${{ github.workspace }}/${{ inputs.test_target }}"
+          popd
+
+      - name: Authenticate to Google Cloud
+        if: steps.guard.outputs.ready == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud
+        if: steps.guard.outputs.ready == 'true'
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run on Firebase Test Lab
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          gcloud firebase test android run \
+            --project "$GCP_PROJECT_ID" \
+            --type instrumentation \
+            --app build/app/outputs/apk/debug/app-debug.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --device model=${{ inputs.device_model }},version=${{ inputs.android_api }},locale=en,orientation=portrait \
+            --timeout 5m
