@@ -28,6 +28,8 @@ jobs:
           VERSION_NAME="1.0.$(printf '%03d' ${{ github.run_number }})"
           echo "flutter.versionCode=${VERSION_CODE}" >> local.properties
           echo "flutter.versionName=${VERSION_NAME}" >> local.properties
+          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
+          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
           echo "Generated versionCode=${VERSION_CODE} versionName=${VERSION_NAME}"
       - name: Print root properties file
         run: cat local.properties
@@ -128,7 +130,16 @@ jobs:
 
       # ... other build steps
       - name: Build debug AAB
-        run: flutter build appbundle --release --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
+        run: |
+          flutter build appbundle --release \
+            --build-number=${{ env.VERSION_CODE }} \
+            --build-name=${{ env.VERSION_NAME }} \
+            --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" \
+            --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" \
+            --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" \
+            --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" \
+            --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" \
+            --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
 #        run: flutter build appbundle --release --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
         #run: flutter build appbundle --profile --verbose --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" --dart-define=FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" --dart-define=KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" --dart-define=KEY_ALIAS="${{ secrets.KEY_ALIAS }}" --dart-define=KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}" --dart-define=KEYSTORE_BASE64="${{ secrets.KEYSTORE_BASE64 }}"
         #run: flutter build appbundle --release --verbose
