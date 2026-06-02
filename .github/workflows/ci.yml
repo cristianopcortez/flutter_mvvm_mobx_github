@@ -12,8 +12,8 @@ env:
 
 jobs:
   # ---------------------------------------------------------------------------
-  # Opção A — Análise estática + testes unitários (rápido e estável).
-  # Este job é o que define a cor do badge "CI".
+  # Option A — Static analysis + unit tests (fast and stable).
+  # This job drives the CI badge color.
   # ---------------------------------------------------------------------------
   unit_tests:
     name: A · Analyze + Unit Tests
@@ -41,9 +41,9 @@ jobs:
         run: flutter test test/
 
   # ---------------------------------------------------------------------------
-  # Opção B — Testes instrumentados (integration_test) em emulador Android.
-  # continue-on-error: o emulador no runner pode ser lento/instável; enquanto
-  # isso estabiliza ele NÃO derruba o badge "CI".
+  # Option B — Instrumented tests (integration_test) on Android emulator.
+  # continue-on-error: emulator on the runner can be slow/flaky; while it
+  # stabilizes it does NOT affect the CI badge.
   # ---------------------------------------------------------------------------
   integration_emulator:
     name: B · Integration (Android emulator)
@@ -93,3 +93,43 @@ jobs:
           profile: pixel_5
           disable-animations: true
           script: flutter test integration_test
+
+  # ---------------------------------------------------------------------------
+  # Option B2 — Instrumented tests (integration_test) on iOS simulator.
+  # Requires macos-latest (includes Xcode). continue-on-error: does not
+  # affect the CI badge while stabilizing.
+  # ---------------------------------------------------------------------------
+  integration_ios_simulator:
+    name: B2 · Integration (iOS simulator)
+    runs-on: macos-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GoogleService-Info.plist
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_PLIST_BASE64 }}" | base64 -d > ios/Runner/GoogleService-Info.plist
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code (MobX + mocks)
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Install CocoaPods dependencies
+        run: pod install
+        working-directory: ios
+
+      - name: Run integration tests on iOS simulator
+        run: |
+          flutter test integration_test \
+            --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" \
+            --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" \
+            -d "iPhone 16"
