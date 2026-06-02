@@ -135,6 +135,15 @@ jobs:
           xcrun simctl bootstatus "$UDID" -b
           echo "SIM_UDID=$UDID" >> $GITHUB_ENV
 
+      - name: Pre-build iOS app for simulator
+        # Build once so the Xcode DerivedData cache is warm before running
+        # each test file. Without this, the first cold build exceeds the
+        # default 12-minute flutter test timeout.
+        run: |
+          flutter build ios --simulator --debug \
+            --dart-define=FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" \
+            --dart-define=FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}"
+
       - name: Run integration tests on iOS simulator
         # home_screen_test excluded: NativeVideoView (platform view) hangs on
         # headless simulator even with empty fileName. The other 3 suites cover
@@ -147,5 +156,5 @@ jobs:
             integration_test/product_list_test.dart \
             integration_test/post_list_test.dart; do
             echo "--- Running $f ---"
-            flutter test "$f" $DEFINES -d "${{ env.SIM_UDID }}"
+            flutter test "$f" $DEFINES -d "${{ env.SIM_UDID }}" --timeout 30m
           done
