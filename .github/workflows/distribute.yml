@@ -237,6 +237,8 @@ jobs:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
 
+      # completed rolls the bundle out on internal testing and sends it for review.
+      # A draft upload does not count as the developer account being in use.
       - name: Publish to Google Play Internal Track
         uses: r0adkll/upload-google-play@v1
         with:
@@ -244,4 +246,5 @@ jobs:
           packageName: br.com.ccortez.mobx_mvvm
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
           tracks: internal
-          status: draft
+          status: completed
+          changesNotSentForReview: false

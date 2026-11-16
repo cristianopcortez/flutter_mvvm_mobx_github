@@ -65,5 +65,5 @@ workflows:
       google_play:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: $GOOGLE_PLAY_TRACK
-        submit_as_draft: true
+        submit_as_draft: false
 #        service_account_json_path: google-play-service-account.json # Use the file you just created
